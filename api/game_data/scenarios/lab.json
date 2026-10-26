@@ -1,0 +1,9 @@
+{
+  "scenario_id": "lab",
+  "name": "Assisting the Alchemist",
+  "npc_role": "alchemist",
+  "status": "active",
+  "initial_state": {},
+  "required_fields": [],
+  "rewards": {}
+}

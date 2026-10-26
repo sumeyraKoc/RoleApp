@@ -1,0 +1,9 @@
+{
+  "scenario_id": "town",
+  "name": "Hanging Out with Sam",
+  "npc_role": "friend",
+  "status": "active",
+  "initial_state": {},
+  "required_fields": [],
+  "rewards": {}
+}

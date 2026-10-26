@@ -1,0 +1,103 @@
+{
+  "location": "lab",
+  "concepts": [
+    {
+      "concept": "flask",
+      "words": [
+        {
+          "word": "flask",
+          "reward_coins": 10
+        },
+        {
+          "word": "bottle",
+          "reward_coins": 10
+        },
+        {
+          "word": "glass bottle",
+          "reward_coins": 10
+        }
+      ]
+    },
+    {
+      "concept": "cauldron",
+      "words": [
+        {
+          "word": "cauldron",
+          "reward_coins": 10
+        },
+        {
+          "word": "pot",
+          "reward_coins": 10
+        }
+      ]
+    },
+    {
+      "concept": "scales",
+      "words": [
+        {
+          "word": "scales",
+          "reward_coins": 10
+        },
+        {
+          "word": "scale",
+          "reward_coins": 10
+        },
+        {
+          "word": "balance",
+          "reward_coins": 10
+        }
+      ]
+    },
+    {
+      "concept": "mortar",
+      "words": [
+        {
+          "word": "mortar",
+          "reward_coins": 10
+        },
+        {
+          "word": "mortar and pestle",
+          "reward_coins": 10
+        },
+        {
+          "word": "bowl",
+          "reward_coins": 10
+        }
+      ]
+    },
+    {
+      "concept": "shelf",
+      "words": [
+        {
+          "word": "shelf",
+          "reward_coins": 10
+        },
+        {
+          "word": "shelves",
+          "reward_coins": 10
+        },
+        {
+          "word": "bookshelf",
+          "reward_coins": 10
+        }
+      ]
+    },
+    {
+      "concept": "table",
+      "words": [
+        {
+          "word": "table",
+          "reward_coins": 10
+        },
+        {
+          "word": "workbench",
+          "reward_coins": 10
+        },
+        {
+          "word": "desk",
+          "reward_coins": 10
+        }
+      ]
+    }
+  ]
+}

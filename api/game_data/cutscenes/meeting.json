@@ -1,0 +1,59 @@
+{
+  "id": "meeting",
+  "title": "You made it!",
+  "summary": "You met the player as planned, showed the photo of your old broken raft from ten years ago, and talked about building the boat at the pier, reading the book first this time. Now you are spending time together here.",
+  "after": {
+    "stay": [
+      "sam"
+    ],
+    "talk": "sam"
+  },
+  "steps": [
+    {
+      "camera": {
+        "focus": "sam",
+        "zoom": 9
+      }
+    },
+    {
+      "walk": {
+        "who": "player",
+        "near": "sam"
+      }
+    },
+    {
+      "say": {
+        "who": "sam",
+        "text": "Hey, you made it! Right on time… well, almost."
+      }
+    },
+    {
+      "ask": {
+        "who": "sam",
+        "goal": "Say hello to Sam.",
+        "context": "The player just arrived for your meeting. You are happy to see them.",
+        "hint": "Hi Sam! I'm here! How are you?"
+      }
+    },
+    {
+      "title": {
+        "text": "📷 An old photo: two kids and a broken raft",
+        "seconds": 2.5
+      }
+    },
+    {
+      "say": {
+        "who": "sam",
+        "text": "Look. Our raft. Ten years ago. This time, we read the book first. Promise?"
+      }
+    },
+    {
+      "ask": {
+        "who": "sam",
+        "goal": "Promise Sam, and plan when to build the boat.",
+        "context": "You showed the player an old photo of your broken raft and asked them to promise you'll read the boat-building book first. You want to build the boat at the pier together.",
+        "hint": "I promise! Let's meet at the pier tomorrow morning."
+      }
+    }
+  ]
+}

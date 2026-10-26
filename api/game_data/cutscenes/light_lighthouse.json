@@ -1,0 +1,107 @@
+{
+  "id": "light_lighthouse",
+  "title": "Light the Lighthouse",
+  "summary": "The player brought the Mist Lantern to the lighthouse, Elowen explained what it means, you lit the lamp together and the lighthouse shines again for the first time in years. The mist is lifting.",
+  "after": {
+    "talk": "sam"
+  },
+  "steps": [
+    {
+      "camera": {
+        "focus": {
+          "x": 44,
+          "z": 16
+        },
+        "zoom": 9
+      }
+    },
+    {
+      "walk": {
+        "who": "player",
+        "to": {
+          "x": 44,
+          "z": 17
+        }
+      }
+    },
+    {
+      "say": {
+        "who": "elowen",
+        "text": "You found it… the Mist Lantern. The lamp is waiting at the top of the tower."
+      }
+    },
+    {
+      "ask": {
+        "who": "elowen",
+        "goal": "Ask Elowen what will happen when the lamp is lit.",
+        "context": "The player brought you the Mist Lantern. When it is lit, the mist will rest for the first time in years and ships can come home.",
+        "hint": "What will happen when we light it?"
+      }
+    },
+    {
+      "effect": "fade_out"
+    },
+    {
+      "title": {
+        "text": "You climb the long stairs and place the lantern in the lamp…",
+        "seconds": 3
+      }
+    },
+    {
+      "call": "light_beacon"
+    },
+    {
+      "camera": {
+        "focus": {
+          "x": 44,
+          "z": 16
+        },
+        "zoom": 18
+      }
+    },
+    {
+      "effect": "fade_in"
+    },
+    {
+      "effect": "flash"
+    },
+    {
+      "title": {
+        "text": "✨ The lighthouse shines again!",
+        "seconds": 2.5
+      }
+    },
+    {
+      "camera": {
+        "focus": "sam",
+        "zoom": 9
+      }
+    },
+    {
+      "say": {
+        "who": "sam",
+        "text": "No way… the mist is moving! I can see the sea!"
+      }
+    },
+    {
+      "ask": {
+        "who": "sam",
+        "goal": "Say something to Sam about your journey together.",
+        "context": "You and the player just lit the lighthouse together and the mist is lifting. Your journey started at the bakery in town.",
+        "hint": "We did it, Sam! I'm so glad you came with me."
+      }
+    },
+    {
+      "say": {
+        "who": "elowen",
+        "text": "Thank you, travellers. The isles will remember you."
+      }
+    },
+    {
+      "title": {
+        "text": "Chapter 3 complete — more isles are waiting beyond the mist.",
+        "seconds": 3
+      }
+    }
+  ]
+}

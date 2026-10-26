@@ -1,0 +1,140 @@
+{
+  "id": "witch_curse",
+  "title": "A Shadow over the Isles",
+  "summary": "Morwen, the witch of the Thornwood, appeared at the dock in a cloud of dark mist and cursed the isles: the Thornwood in the east has turned black and the curse will spread. You and the player decided to look for the alchemist on the eastern isle.",
+  "after": {
+    "talk": "sam"
+  },
+  "steps": [
+    {
+      "camera": {
+        "focus": {
+          "x": 30,
+          "z": 54
+        },
+        "zoom": 12
+      }
+    },
+    {
+      "title": {
+        "text": "A cold wind blows over the dock…",
+        "seconds": 2.5
+      }
+    },
+    {
+      "effect": "flash"
+    },
+    {
+      "place": {
+        "who": "morwen",
+        "cell": {
+          "x": 30,
+          "z": 52
+        }
+      }
+    },
+    {
+      "camera": {
+        "focus": "morwen",
+        "zoom": 9
+      }
+    },
+    {
+      "say": {
+        "who": "morwen",
+        "text": "So… you are the ones who lit the lighthouse."
+      }
+    },
+    {
+      "say": {
+        "who": "morwen",
+        "text": "For a hundred years my isles slept in the mist. You woke them up."
+      }
+    },
+    {
+      "ask": {
+        "who": "morwen",
+        "goal": "Answer the witch. Who are you, and why did you come?",
+        "context": "You are Morwen, the proud witch of the Thornwood. The player and Sam lit the lighthouse and the mist lifted. You appeared at the dock to frighten them. Answer coldly and mysteriously, in one or two short sentences.",
+        "hint": "We are travellers. We only wanted to help the isles."
+      }
+    },
+    {
+      "say": {
+        "who": "morwen",
+        "text": "Help? Then let me help you too… with a curse."
+      }
+    },
+    {
+      "effect": "flash"
+    },
+    {
+      "camera": {
+        "focus": {
+          "x": 80,
+          "z": 16
+        },
+        "zoom": 16
+      }
+    },
+    {
+      "title": {
+        "text": "Far to the east, the Thornwood turns black…",
+        "seconds": 3
+      }
+    },
+    {
+      "camera": {
+        "focus": "morwen",
+        "zoom": 9
+      }
+    },
+    {
+      "say": {
+        "who": "morwen",
+        "text": "When the Thornwood is dark, every isle will follow. Goodbye, little heroes."
+      }
+    },
+    {
+      "effect": "fade_out"
+    },
+    {
+      "place": {
+        "who": "morwen",
+        "cell": {
+          "x": 80,
+          "z": 14
+        }
+      }
+    },
+    {
+      "effect": "fade_in"
+    },
+    {
+      "camera": {
+        "focus": "sam",
+        "zoom": 9
+      }
+    },
+    {
+      "say": {
+        "who": "sam",
+        "text": "Did that really just happen?! A real witch!"
+      }
+    },
+    {
+      "ask": {
+        "who": "sam",
+        "goal": "Tell Sam what you think you should do now.",
+        "context": "A witch named Morwen just cursed the isles and vanished. Elowen once said an old alchemist lives in the Alchemy Lab on the eastern isle, across a new bridge.",
+        "hint": "We should find the alchemist. Maybe he knows how to break the curse."
+      }
+    },
+    {
+      "say": {
+        "who": "sam",
+        "text": "Then let's go east. The Alchemy Lab is across the bridge!"
+      }
+    }
+  ]
+}

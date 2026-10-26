@@ -1,0 +1,184 @@
+{
+  "id": "pier_departure",
+  "title": "At the pier",
+  "summary": "You and the player fixed the little boat at the pier using the book, Maya brought rolls, Lina asked for her book back dry, and you took a photo of everyone. The boat floats and you are ready to sail to the misty pass together. Now you are standing on the pier next to the boat.",
+  "after": {
+    "stay": [
+      "sam"
+    ],
+    "talk": "sam"
+  },
+  "steps": [
+    {
+      "camera": {
+        "focus": {
+          "x": 20,
+          "z": 51
+        },
+        "zoom": 12
+      }
+    },
+    {
+      "place": {
+        "who": "sam",
+        "cell": {
+          "x": 20,
+          "z": 53
+        }
+      }
+    },
+    {
+      "walk": {
+        "who": "player",
+        "to": {
+          "x": 19,
+          "z": 52
+        }
+      }
+    },
+    {
+      "say": {
+        "who": "sam",
+        "text": "Right on time! The wood is here. Did you bring the book?"
+      },
+      "when": "kept_meeting"
+    },
+    {
+      "say": {
+        "who": "sam",
+        "text": "You came. Good. Did you bring the book?"
+      },
+      "when": "missed_meeting"
+    },
+    {
+      "ask": {
+        "who": "sam",
+        "goal": "Tell Sam you have the book and ask how you can help.",
+        "context": "You are at the pier with the little boat and some wood. You need the boat-building book the player has.",
+        "hint": "Yes, I have it! How can I help?"
+      }
+    },
+    {
+      "title": {
+        "text": "Step 7: Check for holes.",
+        "seconds": 2
+      }
+    },
+    {
+      "say": {
+        "who": "sam",
+        "text": "Holes? What holes? …Oh. That hole."
+      }
+    },
+    {
+      "ask": {
+        "who": "sam",
+        "goal": "Help Sam with the hole in the boat.",
+        "context": "You just found a hole in the boat. You need to fix it before you can sail.",
+        "hint": "Don't worry! Let's fix it together. Give me the hammer."
+      }
+    },
+    {
+      "effect": "fade_out"
+    },
+    {
+      "place": {
+        "who": "maya",
+        "cell": {
+          "x": 19,
+          "z": 46
+        }
+      }
+    },
+    {
+      "place": {
+        "who": "lina",
+        "cell": {
+          "x": 20,
+          "z": 46
+        }
+      }
+    },
+    {
+      "effect": "fade_in"
+    },
+    {
+      "walk": {
+        "who": "maya",
+        "to": {
+          "x": 19,
+          "z": 49
+        },
+        "wait": false
+      }
+    },
+    {
+      "walk": {
+        "who": "lina",
+        "to": {
+          "x": 20,
+          "z": 49
+        }
+      }
+    },
+    {
+      "camera": {
+        "focus": "maya",
+        "zoom": 10
+      }
+    },
+    {
+      "say": {
+        "who": "maya",
+        "text": "I brought more rolls. You can't sail hungry!"
+      }
+    },
+    {
+      "say": {
+        "who": "lina",
+        "text": "And please bring my book back. Dry."
+      }
+    },
+    {
+      "camera": {
+        "focus": "sam",
+        "zoom": 9
+      }
+    },
+    {
+      "effect": "flash"
+    },
+    {
+      "title": {
+        "text": "📷 Click!",
+        "seconds": 1.5
+      }
+    },
+    {
+      "say": {
+        "who": "sam",
+        "text": "Ten years later, and this time it floats!"
+      },
+      "when": "kept_meeting"
+    },
+    {
+      "say": {
+        "who": "sam",
+        "text": "Thanks for coming today. Really."
+      },
+      "when": "missed_meeting"
+    },
+    {
+      "effect": "fade_out"
+    },
+    {
+      "title": {
+        "text": "Chapter 3 — The Misty Isles. Board the boat when you're ready!",
+        "seconds": 3
+      }
+    },
+    {
+      "effect": "fade_in"
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "id": "brew_potion",
+  "title": "The Lab Assistant",
+  "summary": "The player, your new lab assistant, brought you a Moonpetal and Silver Salt. Together you followed the recipe step by step and brewed a glowing moonlight potion to break the witch's curse. The witch's tower is behind the Thorn Gate on the north bridge.",
+  "steps": [
+    {
+      "camera": {
+        "focus": {
+          "x": 65,
+          "z": 43
+        },
+        "zoom": 9
+      }
+    },
+    {
+      "walk": {
+        "who": "player",
+        "to": {
+          "x": 64,
+          "z": 44
+        }
+      }
+    },
+    {
+      "say": {
+        "who": "orrin",
+        "text": "The Moonpetal AND the Silver Salt! Wonderful, wonderful. Gloves on, assistant!"
+      }
+    },
+    {
+      "say": {
+        "who": "orrin",
+        "text": "Read me the recipe, one step at a time. A good assistant reads carefully."
+      }
+    },
+    {
+      "ask": {
+        "who": "orrin",
+        "goal": "Read the first step of the recipe to Orrin: crush the Moonpetal in the mortar.",
+        "context": "You are Orrin the alchemist, brewing the antidote with your new lab assistant. The recipe: 1) crush the Moonpetal in the mortar, 2) add one spoon of Silver Salt to the cauldron and stir slowly, 3) wait until the potion glows. React to what the player reads, briefly and happily.",
+        "hint": "First, we crush the Moonpetal in the mortar."
+      }
+    },
+    {
+      "say": {
+        "who": "orrin",
+        "text": "Crushing… crushing… lovely. What comes next?"
+      }
+    },
+    {
+      "ask": {
+        "who": "orrin",
+        "goal": "Tell Orrin the next step: add a spoon of Silver Salt and stir slowly.",
+        "context": "You are brewing the antidote with your lab assistant. The Moonpetal is crushed. Next: one spoon of Silver Salt into the cauldron, stir slowly. React to the player's instruction briefly.",
+        "hint": "Next, we add one spoon of Silver Salt and stir slowly."
+      }
+    },
+    {
+      "effect": "flash"
+    },
+    {
+      "title": {
+        "text": "The cauldron bubbles… and the potion begins to glow silver.",
+        "seconds": 3
+      }
+    },
+    {
+      "say": {
+        "who": "orrin",
+        "text": "Ha! You're a natural, assistant! This potion can break any curse."
+      }
+    },
+    {
+      "say": {
+        "who": "orrin",
+        "text": "Take it to Morwen's tower. But the Thorn Gate on the north bridge only opens to a strong spell."
+      }
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "scenario_id": "tower",
+  "name": "Facing the Thornwood Witch",
+  "npc_role": "witch",
+  "status": "active",
+  "initial_state": {},
+  "required_fields": [],
+  "rewards": {}
+}

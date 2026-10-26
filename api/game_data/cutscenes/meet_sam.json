@@ -1,0 +1,143 @@
+{
+  "id": "meet_sam",
+  "title": "No way, you're back!",
+  "summary": "You ran into the player, your childhood friend, outside the bakery after many years, saw their map to the misty pass, said you want to come along, and asked them to text you.",
+  "steps": [
+    {
+      "camera": {
+        "focus": {
+          "x": 9,
+          "z": 12
+        },
+        "zoom": 11
+      }
+    },
+    {
+      "title": {
+        "text": "Morning at the bakery",
+        "seconds": 2
+      }
+    },
+    {
+      "walk": {
+        "who": "player",
+        "to": {
+          "x": 8,
+          "z": 13
+        }
+      }
+    },
+    {
+      "place": {
+        "who": "sam",
+        "cell": {
+          "x": 17,
+          "z": 13
+        }
+      }
+    },
+    {
+      "walk": {
+        "who": "sam",
+        "to": {
+          "x": 9,
+          "z": 13
+        },
+        "run": true
+      }
+    },
+    {
+      "effect": "flash"
+    },
+    {
+      "say": {
+        "who": "sam",
+        "text": "No way! Is that really you? You're back!"
+      }
+    },
+    {
+      "ask": {
+        "who": "sam",
+        "goal": "Say hello to Sam. Tell him you're happy to see him.",
+        "context": "You just ran into the player, your childhood friend, outside the bakery. You haven't seen each other for years and you are very excited.",
+        "hint": "Sam! Hi! It's so good to see you!"
+      }
+    },
+    {
+      "camera": {
+        "focus": "player",
+        "zoom": 8
+      }
+    },
+    {
+      "say": {
+        "who": "sam",
+        "text": "Wait… is that a map? To the misty pass?"
+      }
+    },
+    {
+      "ask": {
+        "who": "sam",
+        "goal": "Tell Sam about your map and your trip.",
+        "context": "You just noticed the player is holding a map to the misty pass. You want to know their plan. Remember: as kids you built a raft that broke on the first wave.",
+        "hint": "Yes! I want to go to the misty pass. I need a boat."
+      }
+    },
+    {
+      "walk": {
+        "who": "maya",
+        "to": {
+          "x": 8,
+          "z": 10
+        }
+      }
+    },
+    {
+      "camera": {
+        "focus": "maya",
+        "zoom": 9
+      }
+    },
+    {
+      "say": {
+        "who": "maya",
+        "text": "Sam! Don't scare my customers!"
+      }
+    },
+    {
+      "camera": {
+        "focus": "sam",
+        "zoom": 9
+      }
+    },
+    {
+      "say": {
+        "who": "sam",
+        "text": "Sorry, Maya! Okay, I'm coming with you. I just need my camera bag."
+      }
+    },
+    {
+      "toast": "📱 New contact: Sam"
+    },
+    {
+      "say": {
+        "who": "sam",
+        "text": "Text me, okay? Let's meet later!"
+      }
+    },
+    {
+      "walk": {
+        "who": "sam",
+        "to": {
+          "x": 17,
+          "z": 14
+        },
+        "run": true,
+        "wait": false
+      }
+    },
+    {
+      "wait": 1.2
+    }
+  ]
+}

@@ -1,0 +1,113 @@
+{
+  "id": "break_curse",
+  "title": "Break the Curse",
+  "summary": "The player came back to your tower with Orrin's moonlight potion and offered you friendship instead of a fight. You drank it, the curse broke and the Thornwood turned green again. You promised to visit the lighthouse and stop being alone.",
+  "after": {
+    "talk": "morwen"
+  },
+  "steps": [
+    {
+      "camera": {
+        "focus": {
+          "x": 80,
+          "z": 14
+        },
+        "zoom": 9
+      }
+    },
+    {
+      "walk": {
+        "who": "player",
+        "to": {
+          "x": 80,
+          "z": 16
+        }
+      }
+    },
+    {
+      "say": {
+        "who": "morwen",
+        "text": "You came back. With a potion, I see. Have you come to fight me?"
+      }
+    },
+    {
+      "ask": {
+        "who": "morwen",
+        "goal": "Offer Morwen the potion and your friendship instead of a fight.",
+        "context": "You are Morwen. The player knows your secret: you cast the curse because you were lonely for a hundred years. They brought the alchemist's moonlight potion. Answer them in one or two sentences; let your voice soften.",
+        "hint": "We don't want to fight. Please drink this, and come visit us at the lighthouse."
+      }
+    },
+    {
+      "say": {
+        "who": "morwen",
+        "text": "Nobody has offered me anything kind for a hundred years…"
+      }
+    },
+    {
+      "title": {
+        "text": "Morwen drinks the moonlight potion…",
+        "seconds": 3
+      }
+    },
+    {
+      "effect": "flash"
+    },
+    {
+      "call": "lift_curse"
+    },
+    {
+      "camera": {
+        "focus": {
+          "x": 80,
+          "z": 18
+        },
+        "zoom": 18
+      }
+    },
+    {
+      "title": {
+        "text": "✨ The curse is broken!",
+        "seconds": 2.5
+      }
+    },
+    {
+      "camera": {
+        "focus": "morwen",
+        "zoom": 9
+      }
+    },
+    {
+      "say": {
+        "who": "morwen",
+        "text": "Green… I had forgotten how green my forest was."
+      }
+    },
+    {
+      "camera": {
+        "focus": "sam",
+        "zoom": 9
+      }
+    },
+    {
+      "say": {
+        "who": "sam",
+        "text": "Morwen, you should come to the lighthouse! Elowen makes amazing tea."
+      }
+    },
+    {
+      "ask": {
+        "who": "sam",
+        "goal": "Say something to Morwen to welcome her as a new friend.",
+        "context": "The curse is broken. Morwen, the lonely witch, has just become your friend. Sam invited her to the lighthouse.",
+        "hint": "Welcome, Morwen. We'd love to see you again."
+      }
+    },
+    {
+      "title": {
+        "text": "Chapter 4 complete — the isles have a new friend.",
+        "seconds": 3
+      }
+    }
+  ]
+}

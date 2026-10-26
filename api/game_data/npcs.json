@@ -1,0 +1,34 @@
+{
+  "npcs": [
+    { "id": "maya", "name": "Maya", "location": "bakery", "npc_role": "baker", "friends": ["lina", "leo", "sam"] },
+    { "id": "lina", "name": "Lina", "location": "library", "npc_role": "librarian", "friends": ["maya"] },
+    { "id": "leo", "name": "Leo", "location": "cafe", "npc_role": "barista", "friends": ["maya", "sam"] },
+    { "id": "sam", "name": "Sam", "location": "town", "npc_role": "friend", "friends": ["leo", "maya"], "meets": true },
+    { "id": "elowen", "name": "Elowen", "location": "lighthouse", "npc_role": "keeper", "friends": ["tobias", "orrin"] },
+    { "id": "tobias", "name": "Tobias", "location": "market", "npc_role": "merchant", "friends": ["elowen", "orrin"] },
+    { "id": "orrin", "name": "Orrin", "location": "lab", "npc_role": "alchemist", "friends": ["elowen", "tobias"] },
+    { "id": "morwen", "name": "Morwen", "location": "tower", "npc_role": "witch", "friends": [] }
+  ],
+  "relationship": {
+    "start": { "sympathy": 0, "trust": 40 },
+    "events": {
+      "accepted_turn": { "sympathy": 1, "trust": 0 },
+      "npc_gave_item": { "sympathy": 1, "trust": 0 },
+      "player_gave_item": { "sympathy": 5, "trust": 2 },
+      "quest_completed": { "sympathy": 8, "trust": 5 },
+      "plan_kept": { "sympathy": 5, "trust": 12 },
+      "plan_missed": { "sympathy": -5, "trust": -25 },
+      "apology": { "sympathy": 0, "trust": 10 }
+    },
+    "max_turn_sympathy_per_conversation": 10,
+    "gossip_share": 0.3,
+    "tiers": [
+      { "name": "hostile", "max": -50 },
+      { "name": "cold", "max": -10 },
+      { "name": "neutral", "max": 29 },
+      { "name": "friendly", "max": 69 },
+      { "name": "close", "max": 100 }
+    ]
+  },
+  "memory": { "prompt_limit": 6 }
+}

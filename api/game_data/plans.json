@@ -1,0 +1,29 @@
+{
+  "places": [
+    { "place_id": "cafe", "name": "Leo's café", "aliases": ["café", "cafe", "coffee shop", "Leo's"] },
+    { "place_id": "bakery", "name": "the bakery", "aliases": ["Maya's bakery", "bakery"] },
+    { "place_id": "library", "name": "the library", "aliases": ["library", "Lina's library"] },
+    { "place_id": "plaza", "name": "the fountain", "aliases": ["fountain", "square", "plaza", "town square"] },
+    { "place_id": "pier", "name": "the pier", "aliases": ["pier", "beach", "dock", "harbor"] },
+    { "place_id": "market", "name": "the Mist Market", "aliases": ["mist market", "market", "Tobias's shop"] },
+    { "place_id": "lighthouse", "name": "the lighthouse", "aliases": ["lighthouse", "Elowen's lighthouse", "lighthouse tower"] },
+    { "place_id": "lab", "name": "the Alchemy Lab", "aliases": ["alchemy lab", "lab", "laboratory", "Orrin's lab"] },
+    { "place_id": "tower", "name": "the witch's tower", "aliases": ["witch's tower", "witch tower", "Morwen's tower", "Thornwood"] }
+  ],
+  "rules": {
+    "min_lead_minutes": 15,
+    "earliest": "07:00",
+    "latest": "22:00",
+    "late_minutes": 5,
+    "wait_minutes": 60,
+    "hurt_after_minutes": 10,
+    "reminder_before_minutes": 60,
+    "hangout_minutes": 120
+  },
+  "meeting_scenes": { "cafe": "cafe_meeting", "default": "meeting" },
+  "messages": {
+    "reminder": "See you at {place} at {time}! 📷",
+    "missed": ["I waited at {place} for an hour.", "It's okay. I'm just a little sad."],
+    "kept": "Hey, you made it!"
+  }
+}

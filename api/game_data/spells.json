@@ -1,0 +1,16 @@
+{
+  "gates": [
+    {
+      "gate_id": "mist_gate",
+      "name": "The Mist Gate",
+      "min_words": 4,
+      "fallback_words": ["open", "light", "together", "brave", "remember", "promise"]
+    },
+    {
+      "gate_id": "thorn_gate",
+      "name": "The Thorn Gate",
+      "min_words": 6,
+      "fallback_words": ["courage", "forgive", "although", "believe", "friendship", "brave"]
+    }
+  ]
+}

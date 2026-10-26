@@ -1,0 +1,112 @@
+{
+  "id": "cafe_meeting",
+  "title": "You made it!",
+  "summary": "You met the player at Leo's café as planned. You gave them a hot chocolate that went cold because you ordered it too early, Leo teased you about it, you showed the photo of your old broken raft from ten years ago, and you talked about building the boat at the pier, reading the book first this time. Now you are sitting together at a table in the café.",
+  "after": {
+    "stay": [
+      "sam"
+    ],
+    "talk": "sam"
+  },
+  "steps": [
+    {
+      "camera": {
+        "focus": {
+          "x": 8,
+          "z": 30
+        },
+        "zoom": 9
+      }
+    },
+    {
+      "walk": {
+        "who": "sam",
+        "to": {
+          "x": 7,
+          "z": 30
+        }
+      }
+    },
+    {
+      "walk": {
+        "who": "player",
+        "to": {
+          "x": 8,
+          "z": 29
+        }
+      }
+    },
+    {
+      "say": {
+        "who": "sam",
+        "text": "Hey, you made it! I got you a hot chocolate."
+      }
+    },
+    {
+      "ask": {
+        "who": "sam",
+        "goal": "Thank Sam for the hot chocolate.",
+        "context": "You just gave the player a hot chocolate you ordered for them before they arrived.",
+        "hint": "Thank you, Sam! That's so nice."
+      }
+    },
+    {
+      "camera": {
+        "focus": "leo",
+        "zoom": 9
+      }
+    },
+    {
+      "say": {
+        "who": "leo",
+        "text": "He ordered it twenty minutes ago. It's not hot anymore!"
+      }
+    },
+    {
+      "camera": {
+        "focus": "sam",
+        "zoom": 8
+      }
+    },
+    {
+      "say": {
+        "who": "sam",
+        "text": "Leo! Okay… it's a warm chocolate. Still good!"
+      }
+    },
+    {
+      "title": {
+        "text": "📷 An old photo: two kids and a broken raft",
+        "seconds": 2.5
+      }
+    },
+    {
+      "say": {
+        "who": "sam",
+        "text": "Look. Our raft. Ten years ago."
+      }
+    },
+    {
+      "ask": {
+        "who": "sam",
+        "goal": "Say something about the old photo.",
+        "context": "You just showed the player an old photo of the two of you as kids with your raft, which broke on the first wave.",
+        "hint": "Wow, we were so small! I remember that day."
+      }
+    },
+    {
+      "say": {
+        "who": "sam",
+        "text": "This time, we read the book first. Promise?"
+      }
+    },
+    {
+      "ask": {
+        "who": "sam",
+        "goal": "Promise Sam, and plan when to build the boat.",
+        "context": "You asked the player to promise you'll read the boat-building book first this time. You want to build the boat at the pier together, maybe tomorrow morning.",
+        "hint": "I promise! Let's build it at the pier tomorrow morning."
+      }
+    }
+  ]
+}

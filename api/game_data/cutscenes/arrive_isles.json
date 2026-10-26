@@ -1,0 +1,86 @@
+{
+  "id": "arrive_isles",
+  "title": "Land Ho!",
+  "summary": "You and the player just sailed through the mist and arrived at the Misty Isles: glowing crystals, a market near the dock and an old lighthouse that is completely dark. You decided to explore together.",
+  "steps": [
+    {
+      "camera": {
+        "focus": {
+          "x": 30,
+          "z": 50
+        },
+        "zoom": 14
+      }
+    },
+    {
+      "title": {
+        "text": "The Misty Isles",
+        "seconds": 2.5
+      }
+    },
+    {
+      "say": {
+        "who": "sam",
+        "text": "We made it! Look at this mist… and those crystals!"
+      }
+    },
+    {
+      "ask": {
+        "who": "sam",
+        "goal": "Tell Sam how you feel about the isles.",
+        "context": "You and the player just arrived by boat at the Misty Isles: thick mist, glowing crystals, a market and a dark lighthouse far away.",
+        "hint": "Wow, it's beautiful here! But I'm a little nervous."
+      }
+    },
+    {
+      "camera": {
+        "focus": {
+          "x": 44,
+          "z": 16
+        },
+        "zoom": 14
+      }
+    },
+    {
+      "title": {
+        "text": "Far away, the old lighthouse is dark…",
+        "seconds": 2.5
+      }
+    },
+    {
+      "say": {
+        "who": "sam",
+        "text": "That lighthouse is dark. Maybe that's why the mist never goes away."
+      }
+    },
+    {
+      "camera": {
+        "focus": {
+          "x": 24,
+          "z": 40
+        },
+        "zoom": 11
+      }
+    },
+    {
+      "say": {
+        "who": "sam",
+        "text": "There's a market over there. Someone must know something!"
+      }
+    },
+    {
+      "ask": {
+        "who": "sam",
+        "goal": "Suggest a plan to Sam.",
+        "context": "You see a market near the dock and a dark lighthouse far away. You want to find out why the lighthouse is dark.",
+        "hint": "Let's go to the market and ask about the lighthouse."
+      }
+    },
+    {
+      "camera": {
+        "focus": "player",
+        "zoom": 9
+      }
+    }
+  ]
+}

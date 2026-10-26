@@ -1,0 +1,9 @@
+{
+  "scenario_id": "lighthouse",
+  "name": "The Keeper of the Light",
+  "npc_role": "keeper",
+  "status": "active",
+  "initial_state": {},
+  "required_fields": [],
+  "rewards": {}
+}

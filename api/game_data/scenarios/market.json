@@ -1,0 +1,9 @@
+{
+  "scenario_id": "market",
+  "name": "Bargaining at the Mist Market",
+  "npc_role": "merchant",
+  "status": "active",
+  "initial_state": {},
+  "required_fields": [],
+  "rewards": {}
+}

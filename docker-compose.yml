@@ -1,0 +1,95 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: english_world
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "127.0.0.1:5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d english_world"]
+      interval: 2s
+      timeout: 5s
+      retries: 20
+
+  ai:
+    build:
+      context: .
+      dockerfile: ai/Dockerfile
+    command: uvicorn main:app --host 0.0.0.0 --port 8001 --reload
+    ports:
+      - "127.0.0.1:8001:8001"
+    environment:
+      # Use Gemini when configured; otherwise use Groq when its key is set.
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      # Optional dedicated Gemini speech-to-text key.
+      - GEMINI_STT_API_KEY=${GEMINI_STT_API_KEY:-}
+      - GEMINI_MODEL=${GEMINI_MODEL:-gemini-3.5-flash-lite}
+      # When empty, ai/main.py falls back to GEMINI_MODEL.
+      - GEMINI_EVALUATOR_MODEL=${GEMINI_EVALUATOR_MODEL:-}
+      - CORRECTION_MODEL=${CORRECTION_MODEL:-gemini-3.5-flash-lite}
+      - STT_MODEL=${STT_MODEL:-gemini-3.5-transcribe}
+      - GROQ_API_KEY=${GROQ_API_KEY:-}
+      # NVIDIA Nemotron on Nebius Token Factory for NPC dialogue (falls back to Gemini/Groq).
+      - NEBIUS_API_KEY=${NEBIUS_API_KEY:-}
+      - NEBIUS_MODEL=${NEBIUS_MODEL:-}
+      - GROQ_MODEL=${GROQ_MODEL:-llama-3.3-70b-versatile}
+      - GROQ_INVENTORY_MODEL=${GROQ_INVENTORY_MODEL:-openai/gpt-oss-120b}
+      # Fast Groq "instant" model used by default for evaluation and correction.
+      - GROQ_EVALUATOR_MODEL=${GROQ_EVALUATOR_MODEL:-llama-3.1-8b-instant}
+      - GROQ_CORRECTION_MODEL=${GROQ_CORRECTION_MODEL:-llama-3.1-8b-instant}
+      - GROQ_STT_MODEL=${GROQ_STT_MODEL:-whisper-large-v3-turbo}
+      - GROQ_TTS_MODEL=${GROQ_TTS_MODEL:-canopylabs/orpheus-v1-english}
+      - LANGUAGE_ACCEPTANCE_THRESHOLD=${LANGUAGE_ACCEPTANCE_THRESHOLD:-50}
+      - STT_MAX_AUDIO_BYTES=${STT_MAX_AUDIO_BYTES:-10485760}
+    volumes:
+      - whisper_cache:/root/.cache
+      - ./ai:/app          # live code updates watched by --reload
+      - ./shared:/app/shared
+
+  api:
+    build:
+      context: .
+      dockerfile: api/Dockerfile
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+    ports:
+      - "127.0.0.1:8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/english_world
+      - AI_SERVICE_URL=http://ai:8001
+      - USE_MOCK_AI=${USE_MOCK_AI:-false}
+      - CORS_ORIGINS=${CORS_ORIGINS:-http://localhost:5173,http://127.0.0.1:5173}
+    depends_on:
+      db:
+        condition: service_healthy
+      ai:
+        condition: service_started
+    volumes:
+      - ./api:/app          # live code updates watched by --reload
+      - ./shared:/app/shared
+
+  game:
+    build:
+      context: .
+      dockerfile: game/Dockerfile
+    ports:
+      - "127.0.0.1:5173:5173"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    depends_on:
+      api:
+        condition: service_started
+    volumes:
+      - ./game/src:/app/src
+      - ./game/public:/app/public
+      - ./game/index.html:/app/index.html
+      - ./game/studio.html:/app/studio.html
+      - ./game/vite.config.ts:/app/vite.config.ts
+      - ./api/game_data:/api/game_data:ro
+
+volumes:
+  pgdata:
+  whisper_cache:

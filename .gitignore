@@ -1,0 +1,24 @@
+# .gitignore
+.env
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+*.wav
+node_modules/
+dist/
+.pnpm-store/
+
+# Raw movie clips downloaded or trimmed as source material for Dub the Scene
+# (for example, charade.mp4 and superman.mp4). They are used only once to
+# extract audio or video with ffmpeg and are not required by the application.
+# The optimized output files actually used by the game live under
+# game/public/assets/dub and are committed separately. These larger raw files
+# stay untracked to keep the repository small and can be deleted after export.
+/*.mp4
+/*.mov
+/*.mkv
+
+# Local development database and service logs
+.local/

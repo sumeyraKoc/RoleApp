@@ -1,0 +1,77 @@
+
+import httpx
+from fastapi import APIRouter, Depends, File, HTTPException, Query, UploadFile
+from fastapi.responses import Response
+
+from core.auth import authenticated_user
+from models.models import User
+from services.ai_client import synthesize_speech, transcribe_audio
+from shared.schemas import STTResponse, TTSRequest
+
+router = APIRouter()
+
+
+
+MAX_AUDIO_BYTES = 10 * 1024 * 1024
+
+
+@router.post("/stt", response_model=STTResponse)
+async def speech_to_text(
+    audio: UploadFile = File(...),
+    language_code: str | None = Query(default="en-US"),
+    _user: User = Depends(authenticated_user),
+) -> STTResponse:
+
+    audio_bytes = await audio.read()
+    if not audio_bytes:
+        raise HTTPException(status_code=400, detail="Audio recording is empty.")
+    if len(audio_bytes) > MAX_AUDIO_BYTES:
+        raise HTTPException(status_code=413, detail="Audio recording is too long.")
+
+    try:
+        return await transcribe_audio(
+            audio_bytes,
+            content_type=audio.content_type or "audio/webm",
+            language_code=language_code,
+        )
+    except httpx.HTTPStatusError as error:
+        if error.response.status_code == 429:
+            retry_after = error.response.headers.get("retry-after", "10")
+            raise HTTPException(
+                status_code=429,
+                detail=(
+                    "Speech recognition is temporarily busy. "
+                    f"Please retry in {retry_after} seconds."
+                ),
+                headers={"Retry-After": retry_after},
+            ) from error
+        raise HTTPException(
+            status_code=502, detail=f"Speech-to-text service error: {error}"
+        ) from error
+    except httpx.HTTPError as error:
+        raise HTTPException(
+            status_code=503, detail="Speech-to-text service is unavailable."
+        ) from error
+
+
+@router.post("/tts")
+async def text_to_speech(payload: TTSRequest, _user: User = Depends(authenticated_user)) -> Response:
+
+    try:
+        audio_bytes, extra_headers = await synthesize_speech(payload)
+    except httpx.HTTPStatusError as error:
+        try:
+            upstream_body = error.response.json()
+            upstream_detail = upstream_body.get("detail") if isinstance(upstream_body, dict) else None
+        except ValueError:
+            upstream_detail = None
+        raise HTTPException(
+            status_code=424 if error.response.status_code == 424 else 502,
+            detail=upstream_detail if isinstance(upstream_detail, str) else f"Text-to-speech service error (HTTP {error.response.status_code})",
+        ) from error
+    except httpx.HTTPError as error:
+        raise HTTPException(
+            status_code=503, detail="Text-to-speech service is unavailable."
+        ) from error
+
+    return Response(content=audio_bytes, media_type="audio/wav", headers=extra_headers)

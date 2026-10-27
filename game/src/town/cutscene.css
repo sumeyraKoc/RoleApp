@@ -1,0 +1,57 @@
+/* Cutscenes (CutscenePlayer.ts): letterbox bars, subtitles, title cards, flash and fade. */
+.cutscene { position: absolute; inset: 0; z-index: 30; cursor: pointer; }
+.cutscene__bar {
+  position: absolute; left: 0; right: 0; height: 0; background: #000; transition: height .35s ease;
+}
+.cutscene__bar--top { top: 0; }
+.cutscene__bar--bottom { bottom: 0; }
+.cutscene.is-on .cutscene__bar { height: 11vh; }
+.cutscene__veil { position: absolute; inset: 0; background: #05070d; opacity: 0; transition: opacity .6s ease; pointer-events: none; }
+.cutscene__veil.is-dark { opacity: 1; }
+.cutscene__veil.is-flash { background: #fff; opacity: .85; transition: opacity .08s ease; }
+.cutscene__card {
+  position: absolute; left: 50%; top: 42%; transform: translate(-50%, -50%); margin: 0; max-width: 80vw;
+  padding: 14px 26px; background: rgba(5, 7, 13, .78); border: 1px solid var(--accent); border-radius: 4px;
+  color: #fff; font: 700 clamp(18px, 3vw, 28px) var(--font-display); text-align: center; z-index: 2;
+}
+.cutscene__subtitle {
+  position: absolute; left: 50%; bottom: calc(11vh + 18px); transform: translateX(-50%);
+  width: min(760px, calc(100vw - 32px)); box-sizing: border-box; padding: 14px 18px 12px;
+  background: rgba(5, 7, 13, .82); border-radius: 6px; color: #fff; z-index: 2;
+}
+.cutscene__subtitle strong { display: block; font: 700 13px var(--font-display); color: var(--accent); letter-spacing: .08em; }
+.cutscene__subtitle span { display: block; margin-top: 4px; font-size: clamp(17px, 2.2vw, 21px); line-height: 1.35; }
+.cutscene__subtitle small { display: block; margin-top: 6px; text-align: right; font: 500 11px var(--font-display); opacity: .6; }
+.cutscene__skip {
+  position: absolute; right: 16px; top: calc(11vh + 12px); z-index: 3; cursor: pointer;
+  background: rgba(5, 7, 13, .7); color: #fff; border: 1px solid rgba(255, 255, 255, .3); border-radius: 4px;
+  padding: 6px 12px; font: 500 13px var(--font-display);
+}
+#town.in-cutscene .town-hud > :not(.town-clock):not(.town-toast),
+#town.in-cutscene .town-bubble,
+#town.in-cutscene .town-phone-button { visibility: hidden; }
+.cutscene__ask {
+  position: absolute; left: 50%; bottom: calc(11vh + 18px); transform: translateX(-50%); z-index: 3;
+  width: min(760px, calc(100vw - 32px)); box-sizing: border-box; padding: 14px 16px; margin: 0;
+  background: rgba(5, 7, 13, .9); border: 1px solid var(--accent); border-radius: 6px; color: #fff; cursor: default;
+}
+.cutscene__goal { margin: 0; font: 700 15px var(--font-display); color: var(--accent); }
+.cutscene__feedback { margin: 6px 0 0; min-height: 18px; font-size: 14px; color: #c9d2e3; }
+.cutscene__feedback.is-coach { color: var(--accent); }
+.cutscene__feedback.is-error { color: var(--bad); }
+.cutscene__ask-row { display: flex; gap: 8px; margin-top: 8px; }
+.cutscene__ask-row input {
+  flex: 1; min-width: 0; padding: 10px 12px; border-radius: 4px; border: 1px solid rgba(255, 255, 255, .25);
+  background: #11161f; color: #fff; font: inherit; font-size: 16px;
+}
+.cutscene__ask-row input:focus { outline: none; border-color: var(--accent); }
+.cutscene__ask-row button {
+  border: 0; border-radius: 4px; padding: 0 16px; background: var(--accent); color: var(--accent-ink);
+  font: 700 15px var(--font-display); cursor: pointer;
+}
+.cutscene__ask-row button:disabled { opacity: .6; cursor: wait; }
+.cutscene__ask-tools { display: flex; justify-content: space-between; margin-top: 8px; }
+.cutscene__ask-tools button {
+  background: transparent; border: 0; color: #c9d2e3; font: 500 13px var(--font-display); cursor: pointer; padding: 2px 0;
+}
+.cutscene__ask-tools button[data-continue] { color: var(--accent); }

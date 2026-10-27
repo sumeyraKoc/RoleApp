@@ -1,0 +1,26 @@
+/* Spell panel (SpellPanel.ts): a glowing rune card in the middle of the screen. */
+.spell-panel {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 8;
+  width: min(460px, calc(100vw - 32px)); box-sizing: border-box; padding: 22px 22px 18px; text-align: center;
+  background: radial-gradient(circle at 50% 0%, rgba(80, 200, 235, .25), transparent 60%), #0f1622;
+  border: 1px solid #5fd4f0; border-radius: 10px; color: #e8f6ff;
+  box-shadow: 0 0 40px rgba(95, 212, 240, .35), 0 12px 40px rgba(0, 0, 0, .5);
+}
+.spell-panel__close { position: absolute; right: 12px; top: 10px; background: none; border: 0; color: #9fb4c8; cursor: pointer; font-size: 16px; }
+.spell-panel__eyebrow { margin: 0; font: 700 12px var(--font-display); letter-spacing: .14em; color: #5fd4f0; }
+.spell-panel__lead { margin: 10px 0 4px; font-size: 15px; color: #c9d8e6; }
+.spell-panel__word { margin: 0; font: 700 40px var(--font-display); letter-spacing: .08em; color: #fff; text-shadow: 0 0 18px rgba(143, 243, 255, .8); }
+.spell-panel__source { margin: 4px 0 14px; min-height: 18px; font-size: 13px; color: #9fb4c8; }
+.spell-panel__form { display: flex; gap: 8px; }
+.spell-panel__form input {
+  flex: 1; min-width: 0; padding: 10px 12px; border-radius: 6px; border: 1px solid rgba(143, 243, 255, .4);
+  background: #0a0f17; color: #fff; font: inherit; font-size: 15px;
+}
+.spell-panel__form input:focus { outline: none; border-color: #8ff3ff; }
+.spell-panel__form button {
+  border: 0; border-radius: 6px; padding: 0 14px; background: #5fd4f0; color: #06212b; font: 700 15px var(--font-display); cursor: pointer;
+}
+.spell-panel__form button:disabled { opacity: .6; cursor: wait; }
+.spell-panel__feedback { margin: 12px 0 0; min-height: 20px; font-size: 14px; color: #c9d8e6; }
+.spell-panel__feedback.is-good { color: #8ee89b; }
+.spell-panel__feedback.is-hint { color: var(--accent); }

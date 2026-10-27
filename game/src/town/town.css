@@ -1,0 +1,318 @@
+/* Town HUD: full-bleed 3D canvas, HUD pinned to corners, dialogue docked at the bottom. */
+:root {
+  --sky-top: #8ec5ec;
+  --sky-low: #dcf0f6;
+  --panel: rgba(24, 30, 44, 0.9);
+  --panel-line: rgba(255, 255, 255, 0.12);
+  --panel-fg: #f4efe3;
+  --panel-muted: #b4bccb;
+  --accent: #f2b134;
+  --accent-ink: #2a1d05;
+  --user: #7fd6e0;
+  --good: #8ee89b;
+  --bad: #ff9a8e;
+  --bubble: #fffdf6;
+  --bubble-ink: #1f2430;
+  --font-display: "Pixelify Sans", "Courier New", monospace;
+  --font-body: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
+  color-scheme: light;
+}
+
+html, body { height: 100%; margin: 0; }
+/* Components set display (grid/flex); keep the hidden attribute authoritative. */
+[hidden] { display: none !important; }
+body {
+  background: linear-gradient(180deg, var(--sky-top), var(--sky-low));
+  color: var(--panel-fg);
+  font-family: var(--font-body);
+  overflow: hidden;
+}
+/* Projected world labels may sit outside the viewport; never let focus scroll the game. */
+#town { position: relative; width: 100%; height: 100%; overflow: clip; }
+#town canvas { display: block; touch-action: none; cursor: pointer; }
+
+kbd { font-family: var(--font-display); font-size: 11px; opacity: 0.75; margin-left: 4px; }
+
+.town-hud > * { position: absolute; z-index: 5; }
+.town-brand, .town-stats, .town-controls, .town-links, .town-dialogue {
+  background: var(--panel);
+  border: 1px solid var(--panel-line);
+  border-radius: 6px;
+  box-shadow: 0 6px 24px rgba(10, 20, 40, 0.25);
+}
+.town-brand { top: 16px; left: 16px; padding: 10px 14px; max-width: 300px; }
+.town-brand__eyebrow { margin: 0; font: 500 11px var(--font-display); letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); }
+.town-brand__title { margin: 0; font: 700 26px/1.05 var(--font-display); }
+.town-brand__hint { margin: 6px 0 0; font-size: 13px; color: var(--panel-muted); }
+
+.town-links { top: 16px; right: 16px; display: flex; gap: 6px; padding: 6px; }
+.town-stats {
+  right: 16px; top: 66px; padding: 6px 10px; font-size: 12px;
+  color: var(--panel-muted); font-variant-numeric: tabular-nums;
+}
+/* Keep prompts above the camera even when either row wraps. */
+.town-actions {
+  left: 16px; right: 16px; bottom: max(16px, env(safe-area-inset-bottom));
+  display: flex; flex-direction: column-reverse; align-items: center; gap: 12px;
+  pointer-events: none;
+}
+.town-actions > * { pointer-events: auto; }
+.town-controls {
+  display: flex; flex-wrap: wrap; gap: 6px; padding: 6px; justify-content: center;
+  max-width: 100%; box-sizing: border-box;
+}
+.town-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  font: 500 15px var(--font-display); color: var(--panel-fg); text-decoration: none;
+  background: rgba(255, 255, 255, 0.06); border: 1px solid var(--panel-line); border-radius: 4px;
+  min-width: 40px; height: 36px; padding: 0 12px; cursor: pointer;
+}
+.town-btn:hover { background: rgba(255, 255, 255, 0.14); }
+.town-btn--inventory { border-color: rgba(233, 198, 112, .65); background: rgba(195, 157, 77, .18); }
+.town-btn:focus-visible, .town-prompt:focus-visible, .town-dialogue button:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 2px;
+}
+.town-btn[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+
+.town-prompts {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;
+  width: fit-content; max-width: 100%;
+}
+.town-prompt {
+  font: 700 16px var(--font-display); color: var(--accent-ink); background: var(--accent);
+  border: 0; border-radius: 4px; padding: 10px 18px; cursor: pointer;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.25);
+}
+.town-prompt kbd { margin: 0 8px 0 0; opacity: .7; }
+.town-prompt-group { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.town-prompt--more { background: #f6e3b4; }
+/* The ☰ toggle only exists on phones (see the bottom of this file). */
+.town-menu-toggle { display: none; }
+
+.town-label, .town-bubble {
+  position: absolute; left: 0; top: 0; z-index: 3; pointer-events: none; will-change: transform;
+}
+.town-label {
+  font: 700 13px var(--font-display); white-space: nowrap;
+  background: var(--panel); color: var(--panel-fg); padding: 3px 8px; border-radius: 3px;
+  border-bottom: 2px solid var(--accent);
+}
+.town-bubble {
+  max-width: 240px; background: var(--bubble); color: var(--bubble-ink);
+  font-size: 14px; line-height: 1.35; padding: 8px 10px; border-radius: 6px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+}
+.town-bubble strong { display: block; font: 700 12px var(--font-display); color: #9a5b00; margin-bottom: 2px; }
+.town-bubble::after {
+  content: ""; position: absolute; left: 50%; bottom: -7px; margin-left: -7px;
+  border: 7px solid transparent; border-bottom: 0; border-top-color: var(--bubble);
+}
+
+/* Dialogue panel */
+#town.is-talking .town-controls,
+#town.is-talking .town-prompts { display: none; }
+.town-dialogue {
+  background: rgba(24, 30, 44, 0.97);
+  position: absolute; z-index: 10; left: 50%; bottom: 16px; transform: translateX(-50%);
+  width: min(760px, calc(100% - 32px)); box-sizing: border-box; padding: 12px 14px;
+  display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px;
+}
+.town-dialogue__head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.town-dialogue__head strong { font: 700 18px var(--font-display); color: var(--accent); }
+.town-dialogue__head span { margin-left: 8px; font-size: 12px; color: var(--panel-muted); }
+.town-dialogue__close { background: transparent; border: 0; color: var(--panel-muted); cursor: pointer; font: inherit; font-size: 13px; }
+.town-dialogue__messages { height: 150px; overflow-y: auto; padding-right: 4px; display: grid; align-content: start; gap: 6px; }
+.town-dialogue__empty { margin: 0; color: var(--panel-muted); font-size: 14px; }
+.town-dialogue__msg { display: grid; grid-template-columns: 84px minmax(0, 1fr); gap: 10px; font-size: 15px; line-height: 1.35; }
+.town-dialogue__msg strong { font: 700 12px var(--font-display); color: var(--accent); padding-top: 2px; }
+.town-dialogue__msg.is-user strong { color: var(--user); }
+.town-dialogue__msg.is-feedback span { color: var(--accent); }
+.town-dialogue__msg.is-reward span { color: var(--good); }
+.town-dialogue__msg.is-error span { color: var(--bad); }
+.town-dialogue__msg.is-memory span { color: var(--panel-muted); font-style: italic; }
+.town-dialogue__head .town-dialogue__bond { margin-left: 10px; padding: 1px 8px; border: 1px solid currentColor; border-radius: 999px; font-size: 11px; color: var(--panel-muted); }
+.town-dialogue__head .town-dialogue__bond[data-tier="friendly"], .town-dialogue__head .town-dialogue__bond[data-tier="close"] { color: var(--good); }
+.town-dialogue__head .town-dialogue__bond[data-tier="cold"], .town-dialogue__head .town-dialogue__bond[data-tier="hostile"] { color: var(--bad); }
+.town-dialogue__status { margin: 0; min-height: 16px; font-size: 12px; color: var(--panel-muted); }
+.town-dialogue__form { display: flex; gap: 8px; }
+.town-dialogue__form input {
+  flex: 1; min-width: 0; height: 40px; padding: 0 12px; box-sizing: border-box;
+  border: 1px solid var(--panel-line); border-radius: 4px; background: rgba(0, 0, 0, 0.25);
+  color: var(--panel-fg); font: 16px var(--font-body); outline: 0;
+}
+.town-dialogue__form input:focus { border-color: var(--accent); }
+.town-dialogue__mic, .town-dialogue__send {
+  height: 40px; border: 0; border-radius: 4px; cursor: pointer; font: 700 15px var(--font-display);
+}
+.town-dialogue__mic { width: 44px; background: rgba(255, 255, 255, 0.1); color: var(--panel-fg); display: grid; place-items: center; }
+.town-dialogue__mic.is-recording { background: #e0555f; color: #fff; }
+.town-dialogue__send { min-width: 84px; background: var(--accent); color: var(--accent-ink); }
+.town-dialogue button:disabled { opacity: 0.6; cursor: wait; }
+
+@media (max-width: 900px) {
+  .town-links { top: 108px; left: 16px; right: 16px; flex-wrap: wrap; width: fit-content; }
+  .town-stats { display: none; }
+}
+@media (max-width: 640px) {
+  .town-brand { right: 16px; max-width: none; }
+  .town-brand__title { font-size: 20px; }
+  .town-brand__hint { display: none; }
+  .town-links { top: 80px; }
+  .town-stats { display: none; }
+  .town-controls { width: 100%; }
+  .town-btn { height: 34px; padding: 0 10px; }
+  kbd { display: none; }
+  .town-dialogue__messages { height: 120px; }
+  .town-dialogue__msg { grid-template-columns: 64px minmax(0, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .town-label, .town-bubble { will-change: auto; }
+}
+
+/* Vocabulary panel */
+.town-prompt--vocab { background: var(--good); }
+.town-vocab .town-dialogue__head strong { color: var(--good); }
+.town-vocab__hint, .town-vocab__meter { margin: 0; font-size: 14px; color: var(--panel-muted); }
+.town-vocab__meter { color: var(--panel-fg); }
+.town-vocab__messages { height: 96px; }
+.town-vocab .town-dialogue__send { background: var(--good); }
+.town-vocab .town-dialogue__form input:focus { border-color: var(--good); }
+.town-dialogue__msg.is-vocab-good span { color: var(--good); }
+.town-dialogue__msg.is-vocab-known span { color: var(--user); }
+.town-dialogue__msg.is-vocab-bad span { color: var(--accent); }
+.town-dialogue__msg.is-vocab-error span { color: var(--bad); }
+.town-dialogue__msg.is-vocab-user strong { color: var(--user); }
+
+/* Spell Book drawer */
+.town-btn--book { background: rgba(242, 177, 52, 0.18); border-color: rgba(242, 177, 52, 0.5); }
+.town-book {
+  position: absolute; z-index: 12; top: 16px; right: 16px; bottom: 16px;
+  width: min(400px, calc(100% - 32px)); box-sizing: border-box; padding: 14px 16px;
+  display: grid; grid-template-rows: auto auto auto 1fr auto; gap: 10px;
+  background: rgba(24, 30, 44, 0.97); border: 1px solid var(--panel-line); border-radius: 6px;
+  box-shadow: 0 10px 34px rgba(10, 20, 40, 0.35);
+}
+.town-book__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.town-book__eyebrow { margin: 0; font: 500 11px var(--font-display); letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); }
+.town-book__title { margin: 0; font: 700 24px/1.1 var(--font-display); }
+.town-book__summary { margin: 0; font-size: 13px; color: var(--panel-muted); font-variant-numeric: tabular-nums; }
+.town-book__filters { display: flex; flex-wrap: wrap; gap: 6px; }
+.town-book__filters button {
+  font: 500 13px var(--font-display); color: var(--panel-fg); cursor: pointer;
+  background: rgba(255, 255, 255, 0.06); border: 1px solid var(--panel-line); border-radius: 999px; padding: 4px 10px;
+}
+.town-book__filters button[aria-pressed="true"] { background: var(--panel-fg); color: #1d2433; }
+.town-book__filters button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.town-book__list { list-style: none; margin: 0; padding: 0 4px 0 0; overflow-y: auto; display: grid; align-content: start; gap: 8px; min-height: 0; }
+.town-book__empty { color: var(--panel-muted); font-size: 14px; line-height: 1.45; }
+.town-book__word {
+  --tone: var(--panel-muted);
+  display: grid; gap: 6px; padding: 10px 12px; border-radius: 4px;
+  background: rgba(255, 255, 255, 0.04); border-left: 3px solid var(--tone);
+}
+.town-book__word.is-red { --tone: #ff8e7a; }
+.town-book__word.is-yellow { --tone: #f2c94c; }
+.town-book__word.is-green { --tone: var(--good); }
+.town-book__word.is-new { --tone: var(--user); }
+.town-book__word-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.town-book__word-head strong { font: 700 18px var(--font-display); }
+.town-book__chip { font: 500 12px var(--font-display); color: var(--tone); white-space: nowrap; }
+.town-book__bar { height: 6px; border-radius: 3px; background: rgba(255, 255, 255, 0.08); overflow: hidden; }
+.town-book__bar i { display: block; height: 100%; background: var(--tone); }
+.town-book__facts { margin: 0; font-size: 12px; color: var(--panel-muted); }
+.town-book__example { font-size: 13px; color: var(--panel-fg); font-style: italic; }
+@media (max-width: 640px) {
+  .town-book { top: 8px; right: 8px; left: 8px; bottom: 8px; width: auto; }
+}
+
+/* Spell Book words used by an NPC */
+.town-focus {
+  background: rgba(242, 177, 52, 0.22); color: inherit;
+  border-bottom: 2px dotted var(--accent); border-radius: 2px; padding: 0 2px;
+}
+
+/* In-game clock (gameClock.ts), top centre. */
+.town-clock {
+  position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
+  padding: 6px 14px; border-radius: 4px; background: var(--panel); border: 1px solid var(--panel-line);
+  font: 700 16px var(--font-display); color: var(--panel-fg); letter-spacing: .04em; pointer-events: none;
+}
+.town-toast {
+  position: absolute; top: 56px; left: 50%; transform: translateX(-50%);
+  padding: 8px 16px; border-radius: 4px; background: var(--panel); border: 1px solid var(--accent);
+  color: var(--panel-fg); font-size: 15px; pointer-events: none;
+}
+/* Sleeping: a short fade to black while the clock jumps to morning. */
+#town::after {
+  content: ""; position: absolute; inset: 0; background: #05070d; opacity: 0; pointer-events: none;
+  transition: opacity .6s ease; z-index: 20;
+}
+#town.is-sleeping::after { opacity: 1; }
+
+/* ------------------------------------------------------------------ phones
+   Compact top bar (title · clock · ☰), navigation in a ☰ menu, camera buttons
+   bottom-left, action chips above them, phone button bottom-right.
+   Also used for phones held sideways (short screens). */
+@media (hover: none) and (pointer: coarse) {
+  kbd { display: none; }
+  .town-brand__hint { display: none; }
+  .kbd-only { display: none; }
+  .town-prompt kbd { display: none; }
+}
+@media (max-width: 640px), (max-height: 500px) {
+  .town-brand { top: max(8px, env(safe-area-inset-top)); left: 8px; right: auto; padding: 6px 10px; }
+  .town-brand__eyebrow, .town-brand__hint { display: none; }
+  .town-brand__title { font-size: 17px; }
+  .town-clock { top: max(8px, env(safe-area-inset-top)); left: auto; right: 56px; transform: none; padding: 7px 10px; font-size: 14px; }
+  .town-brand { max-width: calc(100% - 210px); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .town-dialogue__head { flex-wrap: wrap; row-gap: 2px; }
+  .town-toast { top: 58px; width: max-content; max-width: calc(100% - 32px); font-size: 14px; text-align: center; }
+
+  .town-menu-toggle {
+    display: grid; place-items: center; top: max(8px, env(safe-area-inset-top)); right: 8px;
+    width: 40px; height: 36px; padding: 0; border-radius: 6px; cursor: pointer;
+    font: 700 20px var(--font-body); color: var(--panel-fg);
+    background: var(--panel); border: 1px solid var(--panel-line);
+  }
+  #town.menu-open .town-menu-toggle { border-color: var(--accent); color: var(--accent); }
+  .town-links {
+    display: none; top: 52px; right: 8px; left: auto; width: auto;
+    flex-direction: column; align-items: stretch; z-index: 15;
+  }
+  #town.menu-open .town-links { display: flex; }
+  .town-links .town-btn { height: 40px; justify-content: flex-start; }
+
+  .town-actions {
+    left: 8px; right: 76px; bottom: max(10px, env(safe-area-inset-bottom));
+    align-items: flex-start; gap: 8px;
+  }
+  .town-controls { width: auto; padding: 4px; gap: 4px; }
+  .town-controls [data-act^="mode-"] { display: none; }
+  .town-btn { height: 40px; min-width: 40px; padding: 0 10px; }
+  .town-prompts { justify-content: flex-start; }
+  .town-prompt-group { justify-content: flex-start; gap: 6px; }
+  .town-prompt { font-size: 15px; padding: 10px 14px; }
+
+  .town-phone-button { right: 10px; bottom: max(10px, env(safe-area-inset-bottom)); width: 52px; height: 52px; }
+
+  .town-bubble { max-width: 180px; font-size: 13px; padding: 6px 8px; }
+  .town-label { font-size: 11px; padding: 2px 6px; }
+
+  .town-dialogue { bottom: max(8px, env(safe-area-inset-bottom)); width: calc(100% - 16px); padding: 10px; }
+  .town-dialogue__messages { height: 26svh; }
+  .town-dialogue__send { min-width: 64px; }
+  #town.is-talking .town-phone-button, #town.is-talking .adventure-tracker { display: none; }
+}
+/* Mid-size screens (small laptops, tablets): keep the clock clear of the menu buttons. */
+@media (min-width: 901px) and (max-width: 1500px) and (min-height: 501px) {
+  .town-clock { left: 16px; transform: none; top: 124px; }
+}
+@media (min-width: 641px) and (max-width: 900px) and (min-height: 501px) {
+  .town-clock { left: auto; right: 16px; transform: none; top: 16px; }
+}
+@media (hover: none) and (pointer: coarse) and (min-width: 901px) and (max-width: 1500px) and (min-height: 501px) {
+  .town-clock { top: 96px; }
+}
+
+/* Free play: XP lock under a building's name (freePlay.ts). */
+.town-label__lock { display: block; font: 600 11px var(--font-body); color: var(--accent); text-align: center; }

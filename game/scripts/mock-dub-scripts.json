@@ -1,0 +1,468 @@
+[
+  {
+    "id": "gulliver-wedding",
+    "title": "Gulliver's Travels (1939)",
+    "characters": [
+      "King Little",
+      "King Bombo"
+    ],
+    "audio_url": "/assets/dub/gulliver-wedding.m4a",
+    "video_url": "/assets/dub/gulliver-wedding.mp4",
+    "lines": [
+      {
+        "id": 1,
+        "speaker": "King Little",
+        "text": "Your Majesty.",
+        "start_seconds": 2.9,
+        "end_seconds": 6.2,
+        "voice": "Kore"
+      },
+      {
+        "id": 2,
+        "speaker": "King Bombo",
+        "text": "Thank you, Your Majesty.",
+        "start_seconds": 6.2,
+        "end_seconds": 9.7,
+        "voice": "Kore"
+      },
+      {
+        "id": 3,
+        "speaker": "King Bombo",
+        "text": "Marriage Contract.",
+        "start_seconds": 9.7,
+        "end_seconds": 12.8,
+        "voice": "Kore"
+      },
+      {
+        "id": 4,
+        "speaker": "King Bombo",
+        "text": "King Little...",
+        "start_seconds": 12.8,
+        "end_seconds": 13.9,
+        "voice": "Kore"
+      },
+      {
+        "id": 5,
+        "speaker": "King Bombo",
+        "text": "...of Lilliput does this 5th day of November 1699 give the hand of his daughter, Princess Glory...",
+        "start_seconds": 13.9,
+        "end_seconds": 20.0,
+        "voice": "Kore"
+      },
+      {
+        "id": 6,
+        "speaker": "King Bombo",
+        "text": "...to Prince David, son of Bombo, King of Blefuscu.",
+        "start_seconds": 20.0,
+        "end_seconds": 30.0,
+        "voice": "Kore"
+      },
+      {
+        "id": 7,
+        "speaker": "King Bombo",
+        "text": "Quite in order, right.",
+        "start_seconds": 30.0,
+        "end_seconds": 31.0,
+        "voice": "Kore"
+      },
+      {
+        "id": 8,
+        "speaker": "King Bombo",
+        "text": "King... Bom... bo!",
+        "start_seconds": 31.0,
+        "end_seconds": 34.3,
+        "voice": "Kore"
+      },
+      {
+        "id": 9,
+        "speaker": "King Bombo",
+        "text": "Well, we did it, you little rascal, you. We did it!",
+        "start_seconds": 49.0,
+        "end_seconds": 51.7,
+        "voice": "Kore"
+      },
+      {
+        "id": 10,
+        "speaker": "King Little",
+        "text": "Yes, we certainly did, didn't we?",
+        "start_seconds": 51.7,
+        "end_seconds": 52.9,
+        "voice": "Kore"
+      },
+      {
+        "id": 11,
+        "speaker": "King Bombo",
+        "text": "Just a couple of old dad cupids, I think.",
+        "start_seconds": 52.9,
+        "end_seconds": 55.2,
+        "voice": "Kore"
+      },
+      {
+        "id": 12,
+        "speaker": "King Little",
+        "text": "A couple of old dad cupids!",
+        "start_seconds": 55.2,
+        "end_seconds": null,
+        "voice": "Kore"
+      }
+    ],
+    "difficulty_score": 75,
+    "level": 1
+  },
+  {
+    "id": "charade-44",
+    "title": "Charade (1963)",
+    "characters": [
+      "Reggie",
+      "Bartholomew"
+    ],
+    "audio_url": "/assets/dub/charade-44.m4a",
+    "video_url": "/assets/dub/charade-44.mp4",
+    "lines": [
+      {
+        "id": 1,
+        "speaker": "Bartholomew",
+        "text": "Well, you followed?",
+        "start_seconds": 5.1,
+        "end_seconds": 6.5,
+        "voice": "Kore"
+      },
+      {
+        "id": 2,
+        "speaker": "Reggie",
+        "text": "Yes, by Dyle, but I lost him.",
+        "start_seconds": 7.2,
+        "end_seconds": 9.0,
+        "voice": "Kore"
+      },
+      {
+        "id": 3,
+        "speaker": "Reggie",
+        "text": "I'm beginning to think women make the best spies.",
+        "start_seconds": 9.5,
+        "end_seconds": 11.4,
+        "voice": "Kore"
+      },
+      {
+        "id": 4,
+        "speaker": "Bartholomew",
+        "text": "Agents.",
+        "start_seconds": 11.8,
+        "end_seconds": 13.0,
+        "voice": "Kore"
+      },
+      {
+        "id": 5,
+        "speaker": "Reggie",
+        "text": "He has a gun, Mr. Bartholomew.",
+        "start_seconds": 13.2,
+        "end_seconds": 14.7,
+        "voice": "Kore"
+      },
+      {
+        "id": 6,
+        "speaker": "Bartholomew",
+        "text": "No.",
+        "start_seconds": 16.0,
+        "end_seconds": 16.3,
+        "voice": "Kore"
+      },
+      {
+        "id": 7,
+        "speaker": "Reggie",
+        "text": "But I saw it.",
+        "start_seconds": 16.6,
+        "end_seconds": 17.7,
+        "voice": "Kore"
+      },
+      {
+        "id": 8,
+        "speaker": "Bartholomew",
+        "text": "No, that's not Carson Dyle.",
+        "start_seconds": 17.9,
+        "end_seconds": 19.8,
+        "voice": "Kore"
+      },
+      {
+        "id": 9,
+        "speaker": "Reggie",
+        "text": "Carson?",
+        "start_seconds": 20.5,
+        "end_seconds": 20.9,
+        "voice": "Kore"
+      },
+      {
+        "id": 10,
+        "speaker": "Bartholomew",
+        "text": "There's only one Dyle connected with this affair, Mrs. Lampert, that's Carson Dyle.",
+        "start_seconds": 21.8,
+        "end_seconds": 25.2,
+        "voice": "Kore"
+      },
+      {
+        "id": 11,
+        "speaker": "Reggie",
+        "text": "You mean you've known about him all along?",
+        "start_seconds": 25.9,
+        "end_seconds": 27.5,
+        "voice": "Kore"
+      },
+      {
+        "id": 12,
+        "speaker": "Bartholomew",
+        "text": "It's enough to make you a vegetarian, isn't it?",
+        "start_seconds": 29.1,
+        "end_seconds": 31.9,
+        "voice": "Kore"
+      },
+      {
+        "id": 13,
+        "speaker": "Reggie",
+        "text": "It's just lucky that I'm not hanging next to one of those things right now.",
+        "start_seconds": 33.2,
+        "end_seconds": 36.3,
+        "voice": "Kore"
+      },
+      {
+        "id": 14,
+        "speaker": "Reggie",
+        "text": "Why didn't you tell me you knew about Dyle?",
+        "start_seconds": 36.8,
+        "end_seconds": 40.6,
+        "voice": "Kore"
+      },
+      {
+        "id": 15,
+        "speaker": "Bartholomew",
+        "text": "I didn't see any point. Dyle's dead.",
+        "start_seconds": 41.0,
+        "end_seconds": 42.8,
+        "voice": "Kore"
+      },
+      {
+        "id": 16,
+        "speaker": "Reggie",
+        "text": "Mr. Bartholomew, what is all this about?",
+        "start_seconds": 44.7,
+        "end_seconds": null,
+        "voice": "Kore"
+      }
+    ],
+    "difficulty_score": 105,
+    "level": 2
+  },
+  {
+    "id": "superman-caverns",
+    "title": "Superman (1943)",
+    "characters": [
+      "Henderson",
+      "Clark Kent",
+      "Lois Lane",
+      "Mr. White"
+    ],
+    "audio_url": "/assets/dub/superman-caverns.m4a",
+    "video_url": "/assets/dub/superman-caverns.mp4",
+    "lines": [
+      {
+        "id": 1,
+        "speaker": "Henderson",
+        "text": "And while on a hunting trip, my father discovered what are now known as the Henderson Caverns.",
+        "start_seconds": 0.2,
+        "end_seconds": 5.7,
+        "voice": "Kore"
+      },
+      {
+        "id": 2,
+        "speaker": "Henderson",
+        "text": "More than 40 years ago, he mysteriously disappeared while exploring them further.",
+        "start_seconds": 6.6,
+        "end_seconds": 10.9,
+        "voice": "Kore"
+      },
+      {
+        "id": 3,
+        "speaker": "Henderson",
+        "text": "Recently I found these maps and charts he left, suggesting there are still greater wonders and mysteries lay beyond in this vast underground world.",
+        "start_seconds": 12.1,
+        "end_seconds": 20.3,
+        "voice": "Kore"
+      },
+      {
+        "id": 4,
+        "speaker": "Henderson",
+        "text": "Now if your paper will help finance the expedition, I will take Miss Lane and Mr. Kent with me and guarantee the Daily Planet exclusive rights to the story.",
+        "start_seconds": 21.2,
+        "end_seconds": 30.0,
+        "voice": "Kore"
+      },
+      {
+        "id": 5,
+        "speaker": "Clark Kent",
+        "text": "Sounds like a great story, Chief.",
+        "start_seconds": 30.9,
+        "end_seconds": 32.2,
+        "voice": "Kore"
+      },
+      {
+        "id": 6,
+        "speaker": "Lois Lane",
+        "text": "I'd love to go.",
+        "start_seconds": 32.6,
+        "end_seconds": 33.7,
+        "voice": "Kore"
+      },
+      {
+        "id": 7,
+        "speaker": "Mr. White",
+        "text": "Well, let me see...",
+        "start_seconds": 34.6,
+        "end_seconds": 36.3,
+        "voice": "Kore"
+      },
+      {
+        "id": 8,
+        "speaker": "Mr. White",
+        "text": "All right, it's a deal.",
+        "start_seconds": 37.4,
+        "end_seconds": 38.4,
+        "voice": "Kore"
+      },
+      {
+        "id": 9,
+        "speaker": "Henderson",
+        "text": "Thanks, Mr. White. We can leave immediately.",
+        "start_seconds": 39.0,
+        "end_seconds": null,
+        "voice": "Kore"
+      }
+    ],
+    "difficulty_score": 108,
+    "level": 3
+  },
+  {
+    "id": "notld-cemetery",
+    "title": "Night of the Living Dead (1968)",
+    "characters": [
+      "Barbra",
+      "Johnny"
+    ],
+    "audio_url": "/assets/dub/notld-cemetery.m4a",
+    "video_url": "/assets/dub/notld-cemetery.mp4",
+    "lines": [
+      {
+        "id": 1,
+        "speaker": "Barbra",
+        "text": "They ought to make the day the time changes the first day of summer.",
+        "start_seconds": 2.0,
+        "end_seconds": 5.8,
+        "voice": "Kore"
+      },
+      {
+        "id": 2,
+        "speaker": "Johnny",
+        "text": "What?",
+        "start_seconds": 5.8,
+        "end_seconds": 6.9,
+        "voice": "Kore"
+      },
+      {
+        "id": 3,
+        "speaker": "Barbra",
+        "text": "Well, it's eight o'clock and it's still light.",
+        "start_seconds": 6.9,
+        "end_seconds": 9.3,
+        "voice": "Kore"
+      },
+      {
+        "id": 4,
+        "speaker": "Johnny",
+        "text": "A lot of good the extra daylight does us. Now we've still got a three-hour drive back. We're not going to be home until after midnight.",
+        "start_seconds": 9.3,
+        "end_seconds": 15.9,
+        "voice": "Kore"
+      },
+      {
+        "id": 5,
+        "speaker": "Barbra",
+        "text": "Well, if it really bugged you, Johnny, you wouldn't do it.",
+        "start_seconds": 15.9,
+        "end_seconds": 18.7,
+        "voice": "Kore"
+      },
+      {
+        "id": 6,
+        "speaker": "Johnny",
+        "text": "You think I wanna blow Sunday on a scene like this? You know, I figure we're either gonna have to move Mother out here or move the grave into Pittsburgh.",
+        "start_seconds": 18.7,
+        "end_seconds": 26.3,
+        "voice": "Kore"
+      },
+      {
+        "id": 7,
+        "speaker": "Barbra",
+        "text": "She can't make a trip like this.",
+        "start_seconds": 26.3,
+        "end_seconds": 28.2,
+        "voice": "Kore"
+      },
+      {
+        "id": 8,
+        "speaker": "Johnny",
+        "text": "Oh, I know that she can't.",
+        "start_seconds": 28.2,
+        "end_seconds": 29.9,
+        "voice": "Kore"
+      },
+      {
+        "id": 9,
+        "speaker": "Johnny",
+        "text": "Is there any of that candy left?",
+        "start_seconds": 29.9,
+        "end_seconds": 32.6,
+        "voice": "Kore"
+      },
+      {
+        "id": 10,
+        "speaker": "Barbra",
+        "text": "No.",
+        "start_seconds": 32.6,
+        "end_seconds": 33.1,
+        "voice": "Kore"
+      },
+      {
+        "id": 11,
+        "speaker": "Johnny",
+        "text": "Look at this thing. \"We still remember.\" I don't. You know, I don't even remember what the man looks like.",
+        "start_seconds": 33.1,
+        "end_seconds": 40.0,
+        "voice": "Kore"
+      },
+      {
+        "id": 12,
+        "speaker": "Barbra",
+        "text": "Johnny, it takes you five minutes.",
+        "start_seconds": 40.0,
+        "end_seconds": 41.6,
+        "voice": "Kore"
+      },
+      {
+        "id": 13,
+        "speaker": "Johnny",
+        "text": "Yeah, five minutes to put the wreath on the grave and six hours to drive back and forth. Mother wants to remember, so we trot 200 miles into the country and she stays at home.",
+        "start_seconds": 41.6,
+        "end_seconds": 50.8,
+        "voice": "Kore"
+      },
+      {
+        "id": 14,
+        "speaker": "Barbra",
+        "text": "Well, we're here, John, all right?",
+        "start_seconds": 50.8,
+        "end_seconds": null,
+        "voice": "Kore"
+      }
+    ],
+    "difficulty_score": 178,
+    "level": 4
+  }
+]

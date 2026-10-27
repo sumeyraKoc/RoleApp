@@ -1,0 +1,255 @@
+from __future__ import annotations
+
+from pathlib import Path
+from typing import Protocol
+
+from shared.grammar_taxonomy import GRAMMAR_TOPICS
+from shared.schemas import (
+    CorrectExtractionResult,
+    ExtractionRequest,
+    ExtractionResult,
+    GrammarFinding,
+    IdiomFinding,
+    IncorrectExtractionResult,
+    VocabularyErrorFinding,
+    VocabularyFinding,
+)
+
+from .groq_client import (
+    DEFAULT_GROQ_MODEL,
+    build_groq_client,
+    groq_chat_json,
+    json_schema_instruction,
+)
+
+
+CORRECT_PROMPT_PATH = (
+    Path(__file__).resolve().parents[1] / "prompts" / "correct_extractor.txt"
+)
+INCORRECT_PROMPT_PATH = (
+    Path(__file__).resolve().parents[1] / "prompts" / "incorrect_extractor.txt"
+)
+
+class ExtractionProvider(Protocol):
+    def analyze(self, request: ExtractionRequest) -> ExtractionResult: ...
+
+
+class _GeminiExtractionProvider:
+    """Gemini structured-output adapter for linguistic extraction."""
+
+    def __init__(
+        self,
+        api_key: str,
+        prompt_path: Path,
+        result_type: type[CorrectExtractionResult] | type[IncorrectExtractionResult],
+        model: str = "gemini-3.5-flash-lite",
+    ):
+        if not api_key:
+            raise ValueError("GEMINI_API_KEY is not defined")
+
+        try:
+            from google import genai
+        except ImportError as exc:
+            raise RuntimeError(
+                "Gemini dependency is missing. Run 'pip install -r ai/requirements.txt'."
+            ) from exc
+
+        self._client = genai.Client(api_key=api_key)
+        self._model = model
+        self._system_instruction = prompt_path.read_text(encoding="utf-8")
+        self._result_type = result_type
+
+    def analyze(self, request: ExtractionRequest) -> ExtractionResult:
+        from google.genai import types
+
+        response = self._client.models.generate_content(
+            model=self._model,
+            contents=request.model_dump_json(indent=2),
+            config=types.GenerateContentConfig(
+                system_instruction=self._system_instruction,
+                temperature=0,
+                response_mime_type="application/json",
+                response_json_schema=self._result_type.model_json_schema(),
+                automatic_function_calling=types.AutomaticFunctionCallingConfig(
+                    disable=True
+                ),
+            ),
+        )
+        if not response.text:
+            raise RuntimeError("Gemini returned an empty extraction")
+        return self._result_type.model_validate_json(response.text)
+
+
+class GeminiCorrectExtractionProvider(_GeminiExtractionProvider):
+    """Gemini adapter that can only use the correct-usage prompt."""
+
+    def __init__(
+        self,
+        api_key: str,
+        model: str = "gemini-3.5-flash-lite",
+    ):
+        super().__init__(
+            api_key=api_key,
+            prompt_path=CORRECT_PROMPT_PATH,
+            result_type=CorrectExtractionResult,
+            model=model,
+        )
+
+
+class GeminiIncorrectExtractionProvider(_GeminiExtractionProvider):
+    """Gemini adapter that can only use the incorrect-usage prompt."""
+
+    def __init__(
+        self,
+        api_key: str,
+        model: str = "gemini-3.5-flash-lite",
+    ):
+        super().__init__(
+            api_key=api_key,
+            prompt_path=INCORRECT_PROMPT_PATH,
+            result_type=IncorrectExtractionResult,
+            model=model,
+        )
+
+
+class _GroqExtractionProvider:
+    """Groq (OpenAI-compatible chat-completions, JSON mode) extraction adapter.
+
+    Mirrors `_GeminiExtractionProvider`: same prompt files, same result
+    types, only the underlying model API differs.
+    """
+
+    def __init__(
+        self,
+        api_key: str,
+        prompt_path: Path,
+        result_type: type[CorrectExtractionResult] | type[IncorrectExtractionResult],
+        model: str = DEFAULT_GROQ_MODEL,
+    ):
+        self._client = build_groq_client(api_key)
+        self._model = model
+        self._result_type = result_type
+        self._system_instruction = prompt_path.read_text(
+            encoding="utf-8"
+        ) + json_schema_instruction(result_type.model_json_schema())
+
+    def analyze(self, request: ExtractionRequest) -> ExtractionResult:
+        content = groq_chat_json(
+            self._client,
+            model=self._model,
+            system_instruction=self._system_instruction,
+            user_content=request.model_dump_json(indent=2),
+        )
+        return self._result_type.model_validate_json(content)
+
+
+class GroqCorrectExtractionProvider(_GroqExtractionProvider):
+    """Groq adapter that can only use the correct-usage prompt."""
+
+    def __init__(self, api_key: str, model: str = DEFAULT_GROQ_MODEL):
+        super().__init__(
+            api_key=api_key,
+            prompt_path=CORRECT_PROMPT_PATH,
+            result_type=CorrectExtractionResult,
+            model=model,
+        )
+
+
+class GroqIncorrectExtractionProvider(_GroqExtractionProvider):
+    """Groq adapter that can only use the incorrect-usage prompt."""
+
+    def __init__(self, api_key: str, model: str = DEFAULT_GROQ_MODEL):
+        super().__init__(
+            api_key=api_key,
+            prompt_path=INCORRECT_PROMPT_PATH,
+            result_type=IncorrectExtractionResult,
+            model=model,
+        )
+
+
+def _normalize_grammar(findings: list[GrammarFinding]) -> list[GrammarFinding]:
+    grammar_by_id: dict[int, GrammarFinding] = {}
+    for finding in findings:
+        canonical_name = GRAMMAR_TOPICS[finding.topic_id]
+        existing = grammar_by_id.get(finding.topic_id)
+        if existing:
+            existing.count += finding.count
+            existing.evidence = list(
+                dict.fromkeys([*existing.evidence, *finding.evidence])
+            )
+            existing.issue = existing.issue or finding.issue
+        else:
+            grammar_by_id[finding.topic_id] = finding.model_copy(
+                update={"topic_name": canonical_name}
+            )
+    return list(grammar_by_id.values())
+
+
+def _normalize_idioms(findings: list[IdiomFinding]) -> list[IdiomFinding]:
+    idioms_by_key: dict[str, IdiomFinding] = {}
+    for finding in findings:
+        normalized = " ".join(finding.normalized_idiom.lower().split())
+        existing = idioms_by_key.get(normalized)
+        if existing:
+            existing.count += finding.count
+            existing.issue = existing.issue or finding.issue
+        else:
+            idioms_by_key[normalized] = finding.model_copy(
+                update={"normalized_idiom": normalized}
+            )
+    return list(idioms_by_key.values())
+
+
+class CorrectExtractor:
+    def __init__(self, provider: ExtractionProvider):
+        self.provider = provider
+
+    def extract(self, request: ExtractionRequest) -> CorrectExtractionResult:
+        raw = self.provider.analyze(request)
+        if not isinstance(raw, CorrectExtractionResult):
+            raise TypeError("CorrectExtractor requires a correct extraction result")
+
+        vocabulary_by_key: dict[tuple[str, str, str], VocabularyFinding] = {}
+        for finding in raw.vocabulary:
+            lemma = finding.lemma.strip().lower()
+            key = (lemma, finding.part_of_speech, finding.cefr_level)
+            existing = vocabulary_by_key.get(key)
+            if existing:
+                existing.count += finding.count
+                existing.issue = existing.issue or finding.issue
+            else:
+                vocabulary_by_key[key] = finding.model_copy(update={"lemma": lemma})
+
+        return CorrectExtractionResult(
+            grammar=_normalize_grammar(raw.grammar),
+            vocabulary=list(vocabulary_by_key.values()),
+            idioms=_normalize_idioms(raw.idioms),
+        )
+
+
+class IncorrectExtractor:
+    def __init__(self, provider: ExtractionProvider):
+        self.provider = provider
+
+    def extract(self, request: ExtractionRequest) -> IncorrectExtractionResult:
+        raw = self.provider.analyze(request)
+        if not isinstance(raw, IncorrectExtractionResult):
+            raise TypeError("IncorrectExtractor requires an incorrect extraction result")
+
+        vocabulary_by_key: dict[
+            tuple[str, str, str], VocabularyErrorFinding
+        ] = {}
+        for finding in raw.vocabulary:
+            lemma = finding.lemma.strip().lower()
+            key = (lemma, finding.part_of_speech, finding.error_type)
+            existing = vocabulary_by_key.get(key)
+            if existing:
+                existing.count += finding.count
+            else:
+                vocabulary_by_key[key] = finding.model_copy(update={"lemma": lemma})
+
+        return IncorrectExtractionResult(
+            grammar=_normalize_grammar(raw.grammar),
+            vocabulary=list(vocabulary_by_key.values()),
+            idioms=_normalize_idioms(raw.idioms),
+        )

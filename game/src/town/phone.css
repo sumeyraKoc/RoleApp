@@ -1,0 +1,50 @@
+/* Phone (PhonePanel.ts): a button bottom-right and a phone-shaped message panel above it. */
+.town-phone-button {
+  position: absolute; right: 16px; bottom: max(16px, env(safe-area-inset-bottom)); z-index: 6;
+  width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center; cursor: pointer;
+  background: var(--panel); color: var(--panel-fg); border: 1px solid var(--panel-line);
+  box-shadow: 0 6px 24px rgba(10, 20, 40, 0.3);
+}
+.town-phone-button:hover, .town-phone-button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+.town-phone-button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.town-phone-button__badge {
+  position: absolute; top: -2px; right: -2px; min-width: 20px; height: 20px; padding: 0 5px; box-sizing: border-box;
+  border-radius: 10px; background: #e2574c; color: #fff; font: 700 12px/20px var(--font-display); text-align: center;
+}
+.town-phone {
+  position: absolute; right: 16px; bottom: calc(max(16px, env(safe-area-inset-bottom)) + 68px); z-index: 7;
+  width: min(340px, calc(100vw - 32px)); height: min(480px, calc(100vh - 140px));
+  display: flex; flex-direction: column; box-sizing: border-box;
+  background: #11161f; border: 6px solid #2a3140; border-radius: 26px; overflow: hidden;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+}
+.town-phone__head { display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: #1b2230; }
+.town-phone__head strong { display: block; font: 700 16px var(--font-display); color: var(--panel-fg); }
+.town-phone__head small { color: var(--panel-muted); font-size: 12px; }
+.town-phone__avatar { width: 32px; height: 32px; border-radius: 50%; background: #e0a43a; box-shadow: inset 0 -10px 0 #c98e63; }
+.town-phone__close { margin-left: auto; background: transparent; border: 0; color: var(--panel-muted); font-size: 16px; cursor: pointer; }
+.town-phone__list { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+.town-phone__empty { margin: auto; color: var(--panel-muted); font-size: 14px; text-align: center; }
+.town-phone__msg { margin: 0; max-width: 78%; padding: 8px 11px; border-radius: 14px; font-size: 15px; line-height: 1.35; overflow-wrap: anywhere; }
+.town-phone__msg.is-npc { align-self: flex-start; background: #2a3344; color: var(--panel-fg); border-bottom-left-radius: 4px; }
+.town-phone__msg.is-user { align-self: flex-end; background: #2f8f83; color: #fff; border-bottom-right-radius: 4px; }
+.town-phone__msg.is-user.is-rejected { opacity: .55; text-decoration: line-through; }
+.town-phone__msg.is-in-person { border: 1px solid var(--panel-line); }
+.town-phone__msg small { display: block; margin-bottom: 4px; font-size: 11px; opacity: .72; }
+.town-phone__msg.is-coach { align-self: center; background: transparent; color: var(--accent); font-size: 13px; text-align: center; }
+.town-phone__status { margin: 0; min-height: 16px; padding: 0 14px; font-size: 12px; color: var(--panel-muted); }
+.town-phone__form { display: flex; gap: 6px; padding: 10px; background: #1b2230; }
+.town-phone__form input {
+  flex: 1; min-width: 0; padding: 9px 12px; border-radius: 18px; border: 1px solid var(--panel-line);
+  background: #11161f; color: var(--panel-fg); font: inherit; font-size: 15px;
+}
+.town-phone__form input:focus { outline: none; border-color: var(--accent); }
+.town-phone__form button {
+  border: 0; border-radius: 18px; padding: 0 14px; background: var(--accent); color: var(--accent-ink);
+  font: 700 14px var(--font-display); cursor: pointer;
+}
+#town.is-talking .town-phone-button:not([aria-pressed="true"]) { opacity: .6; }
+.town-phone__plan {
+  margin: 0; padding: 7px 14px; background: rgba(242, 177, 52, 0.14); color: var(--accent);
+  font: 700 13px var(--font-display); border-bottom: 1px solid rgba(242, 177, 52, 0.3);
+}

@@ -1,0 +1,80 @@
+# Render Blueprint: defines the API and AI services reproducibly in one file.
+# See https://render.com/docs/blueprint-spec.
+#
+# This file defines only the production deployment on Render. It does not
+# change the local Docker Compose development workflow.
+#
+# Usage:
+#   1) In Render, choose Dashboard > New > Blueprint and select this repository.
+#   2) Render creates roleapp-api and roleapp-ai and asks for values whose
+#      variables use "sync: false".
+#   3) After roleapp-ai is live, copy its Render URL from the Settings page
+#      (for example, https://roleapp-ai-xxxx.onrender.com) into the
+#      AI_SERVICE_URL variable of roleapp-api. Set USE_MOCK_AI to "false" and
+#      redeploy the API.
+#   Until then, USE_MOCK_AI=true provides fixed but functional responses for
+#   the bakery and library without contacting the AI service.
+services:
+  - type: web
+    name: roleapp-api
+    runtime: docker
+    dockerfilePath: api/Dockerfile
+    dockerContext: .
+    plan: free
+    envVars:
+      - key: PORT
+        value: "10000"
+      - key: DATABASE_URL
+        sync: false # your existing PostgreSQL connection string
+      - key: USE_MOCK_AI
+        value: "true" # set to "false" after deploying roleapp-ai and setting AI_SERVICE_URL
+      - key: AI_SERVICE_URL
+        sync: false # the public https://...onrender.com URL of roleapp-ai
+      - key: CORS_ORIGINS
+        value: "https://roleapp.vercel.app" # update if your production Vercel domain differs
+
+  - type: web
+    name: roleapp-ai
+    runtime: docker
+    dockerfilePath: ai/Dockerfile
+    dockerContext: .
+    plan: free
+    envVars:
+      - key: PORT
+        value: "10000"
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GEMINI_STT_API_KEY
+        sync: false
+      - key: GEMINI_TTS_API_KEY
+        sync: false
+      - key: GEMINI_MODEL
+        value: "gemini-3.5-flash-lite"
+      - key: GEMINI_EVALUATOR_MODEL
+        value: ""
+      - key: CORRECTION_MODEL
+        value: "gemini-3.5-flash-lite"
+      - key: STT_MODEL
+        value: "gemini-3.5-transcribe"
+      - key: TTS_MODEL
+        value: "gemini-3.1-flash-tts-preview"
+      - key: GROQ_API_KEY
+        sync: false
+      - key: NEBIUS_API_KEY
+        sync: false # NVIDIA Nemotron on Nebius Token Factory for NPC dialogue
+      - key: NEBIUS_MODEL
+        value: ""
+      - key: GROQ_MODEL
+        value: "llama-3.3-70b-versatile"
+      - key: GROQ_EVALUATOR_MODEL
+        value: "llama-3.1-8b-instant"
+      - key: GROQ_CORRECTION_MODEL
+        value: "llama-3.1-8b-instant"
+      - key: GROQ_STT_MODEL
+        value: "whisper-large-v3-turbo"
+      - key: GROQ_TTS_MODEL
+        value: "canopylabs/orpheus-v1-english"
+      - key: LANGUAGE_ACCEPTANCE_THRESHOLD
+        value: "50"
+      - key: STT_MAX_AUDIO_BYTES
+        value: "10485760"

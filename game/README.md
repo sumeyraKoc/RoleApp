@@ -6,7 +6,7 @@ The Vite entry point, `index.html`, opens an English three-card selector:
 - **Adventure** — the same town with a three-step, server-persisted quest chain (`?mode=adventure`).
 - **Dub the Scene** — voice a character in a film scene (`?open=dub`).
 
-The town contains Maya's bakery, Lina's library, Leo's café, and the Dub Shop. The old Phaser page at `studio.html?scene=...` remains for deep links; the town and opening cards are the current player flow. Combat and later story chapters are not implemented.
+The town contains Maya's bakery, Lina's library, Leo's café, and the Dub Shop. Players start from the opening mode cards.
 
 ## Run
 
@@ -19,7 +19,7 @@ npm ci
 npm run dev
 ```
 
-The client reads `window.PRAGLISH_API_BASE_URL` when supplied before its script loads; otherwise it calls `http://localhost:8000`. That runtime variable name is retained for compatibility. For UI work without the real API, start `npm run dev:mock-api` in another terminal. The mock returns fixed speech text and a silent WAV, so it cannot verify real AI or audio quality.
+The client reads `window.PRAGLISH_API_BASE_URL` when supplied before its script loads; otherwise it calls `http://localhost:8000`. For UI work without the real API, start `npm run dev:mock-api` in another terminal. The mock returns fixed speech text and a silent WAV, so it cannot verify real AI or audio quality.
 
 ## Town controls
 

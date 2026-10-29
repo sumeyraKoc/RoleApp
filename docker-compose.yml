@@ -36,11 +36,11 @@ services:
       # NVIDIA Nemotron on Nebius Token Factory for NPC dialogue (falls back to Gemini/Groq).
       - NEBIUS_API_KEY=${NEBIUS_API_KEY:-}
       - NEBIUS_MODEL=${NEBIUS_MODEL:-}
-      - GROQ_MODEL=${GROQ_MODEL:-llama-3.3-70b-versatile}
+      - GROQ_MODEL=${GROQ_MODEL:-openai/gpt-oss-120b}
       - GROQ_INVENTORY_MODEL=${GROQ_INVENTORY_MODEL:-openai/gpt-oss-120b}
-      # Fast Groq "instant" model used by default for evaluation and correction.
-      - GROQ_EVALUATOR_MODEL=${GROQ_EVALUATOR_MODEL:-llama-3.1-8b-instant}
-      - GROQ_CORRECTION_MODEL=${GROQ_CORRECTION_MODEL:-llama-3.1-8b-instant}
+      # Smaller Groq model used by default for evaluation and correction.
+      - GROQ_EVALUATOR_MODEL=${GROQ_EVALUATOR_MODEL:-openai/gpt-oss-20b}
+      - GROQ_CORRECTION_MODEL=${GROQ_CORRECTION_MODEL:-openai/gpt-oss-20b}
       - GROQ_STT_MODEL=${GROQ_STT_MODEL:-whisper-large-v3-turbo}
       - GROQ_TTS_MODEL=${GROQ_TTS_MODEL:-canopylabs/orpheus-v1-english}
       - LANGUAGE_ACCEPTANCE_THRESHOLD=${LANGUAGE_ACCEPTANCE_THRESHOLD:-50}

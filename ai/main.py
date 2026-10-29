@@ -249,13 +249,13 @@ def get_correct_extraction_provider() -> ExtractionProvider:
                 model=_env("GEMINI_MODEL", "gemini-3.5-flash-lite"),
             ),
             lambda: GroqCorrectExtractionProvider(
-                api_key=_env("GROQ_API_KEY"), model=_env("GROQ_MODEL", "llama-3.3-70b-versatile"),
+                api_key=_env("GROQ_API_KEY"), model=_env("GROQ_MODEL", "openai/gpt-oss-120b"),
             ),
             "Correct-utterance extraction",
         )
     return GroqCorrectExtractionProvider(
         api_key=_env("GROQ_API_KEY"),
-        model=_env("GROQ_MODEL", "llama-3.3-70b-versatile"),
+        model=_env("GROQ_MODEL", "openai/gpt-oss-120b"),
     )
 
 
@@ -268,13 +268,13 @@ def get_incorrect_extraction_provider() -> ExtractionProvider:
                 model=_env("GEMINI_MODEL", "gemini-3.5-flash-lite"),
             ),
             lambda: GroqIncorrectExtractionProvider(
-                api_key=_env("GROQ_API_KEY"), model=_env("GROQ_MODEL", "llama-3.3-70b-versatile"),
+                api_key=_env("GROQ_API_KEY"), model=_env("GROQ_MODEL", "openai/gpt-oss-120b"),
             ),
             "Incorrect-utterance extraction",
         )
     return GroqIncorrectExtractionProvider(
         api_key=_env("GROQ_API_KEY"),
-        model=_env("GROQ_MODEL", "llama-3.3-70b-versatile"),
+        model=_env("GROQ_MODEL", "openai/gpt-oss-120b"),
     )
 
 
@@ -362,12 +362,12 @@ def _base_npc_generator() -> TextGenerator:
                 api_key=_env("GEMINI_API_KEY"),
                 model=_env("GEMINI_MODEL", "gemini-3.5-flash-lite"),
             ),
-            lambda: GroqTextGenerator(api_key=_env("GROQ_API_KEY"), model=_env("GROQ_MODEL", "llama-3.3-70b-versatile")),
+            lambda: GroqTextGenerator(api_key=_env("GROQ_API_KEY"), model=_env("GROQ_MODEL", "openai/gpt-oss-120b")),
             "NPC reply",
         )
     return GroqTextGenerator(
         api_key=_env("GROQ_API_KEY"),
-        model=_env("GROQ_MODEL", "llama-3.3-70b-versatile"),
+        model=_env("GROQ_MODEL", "openai/gpt-oss-120b"),
     )
 
 

@@ -63,11 +63,11 @@ services:
       - key: NEBIUS_MODEL
         value: ""
       - key: GROQ_MODEL
-        value: "llama-3.3-70b-versatile"
+        value: "openai/gpt-oss-120b"
       - key: GROQ_EVALUATOR_MODEL
-        value: "llama-3.1-8b-instant"
+        value: "openai/gpt-oss-20b"
       - key: GROQ_CORRECTION_MODEL
-        value: "llama-3.1-8b-instant"
+        value: "openai/gpt-oss-20b"
       - key: GROQ_STT_MODEL
         value: "whisper-large-v3-turbo"
       - key: GROQ_TTS_MODEL

@@ -1,4 +1,7 @@
+import asyncio
+import logging
 import os
+import time
 from typing import Literal
 
 import httpx
@@ -29,6 +32,7 @@ AI_EXTRACTION_TIMEOUT_SECONDS = float(
     os.getenv("AI_EXTRACTION_TIMEOUT_SECONDS", "120")
 )
 AI_SPEECH_TIMEOUT_SECONDS = float(os.getenv("AI_SPEECH_TIMEOUT_SECONDS", "45"))
+logger = logging.getLogger(__name__)
 
 
 
@@ -84,13 +88,36 @@ async def evaluate_and_respond(payload: EvaluateRequest) -> EvaluateResponse:
             )
         return template.model_copy(update={"updated_scenario_state": payload.scenario_state})
 
-    async with httpx.AsyncClient(timeout=AI_EVALUATION_TIMEOUT_SECONDS) as client:
-        response = await client.post(
-            f"{AI_SERVICE_URL}/evaluate-and-respond",
-            json=payload.model_dump(),
-        )
-        response.raise_for_status()
-        return EvaluateResponse(**response.json())
+    # Render's free AI instance can be asleep when the API receives the first
+    # turn. Its gateway may answer 502 before the AI process has started.
+    deadline = time.monotonic() + AI_EVALUATION_TIMEOUT_SECONDS
+    retry_delay = 2.0
+    async with httpx.AsyncClient() as client:
+        while True:
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                raise httpx.ReadTimeout("AI service did not become available in time")
+            try:
+                response = await client.post(
+                    f"{AI_SERVICE_URL}/evaluate-and-respond",
+                    json=payload.model_dump(),
+                    timeout=remaining,
+                )
+                response.raise_for_status()
+                return EvaluateResponse(**response.json())
+            except httpx.HTTPStatusError as error:
+                if error.response.status_code not in (502, 503, 504):
+                    raise
+                last_error = error
+            except (httpx.ConnectError, httpx.ConnectTimeout) as error:
+                last_error = error
+
+            remaining = deadline - time.monotonic()
+            if remaining <= retry_delay:
+                raise last_error
+            logger.warning("AI service unavailable (%s); retrying in %.0fs", last_error, retry_delay)
+            await asyncio.sleep(retry_delay)
+            retry_delay = min(retry_delay * 2, 8.0)
 
 
 async def check_sentence(payload: SentenceCheckRequest) -> SentenceCheckResponse:

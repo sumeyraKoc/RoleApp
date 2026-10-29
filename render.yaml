@@ -10,10 +10,8 @@
 #      variables use "sync: false".
 #   3) After roleapp-ai is live, copy its Render URL from the Settings page
 #      (for example, https://roleapp-ai-xxxx.onrender.com) into the
-#      AI_SERVICE_URL variable of roleapp-api. Set USE_MOCK_AI to "false" and
+#      AI_SERVICE_URL variable of roleapp-api. Keep USE_MOCK_AI set to "false" and
 #      redeploy the API.
-#   Until then, USE_MOCK_AI=true provides fixed but functional responses for
-#   the bakery and library without contacting the AI service.
 services:
   - type: web
     name: roleapp-api
@@ -27,7 +25,7 @@ services:
       - key: DATABASE_URL
         sync: false # your existing PostgreSQL connection string
       - key: USE_MOCK_AI
-        value: "true" # set to "false" after deploying roleapp-ai and setting AI_SERVICE_URL
+        value: "false" # live NPC conversations use the configured AI service
       - key: AI_SERVICE_URL
         sync: false # the public https://...onrender.com URL of roleapp-ai
       - key: CORS_ORIGINS

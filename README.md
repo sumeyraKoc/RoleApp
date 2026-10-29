@@ -23,7 +23,7 @@ The client talks only to the `api` service; the `api` calls the `ai` service for
 
 ## Run locally
 
-1. Copy `.env.example` to `.env` and set at least `GROQ_API_KEY` (optionally `GEMINI_API_KEY`).
+1. Copy `.env.example` to `.env` and set `GROQ_API_KEY` or `GEMINI_API_KEY`. To use NVIDIA Nemotron for NPC dialogue, also set `NEBIUS_API_KEY`. Never commit `.env`.
 2. Start everything with Docker:
 
 ```bash
@@ -39,3 +39,20 @@ docker compose exec -T game npm test
 docker compose exec -T api python -m unittest discover -s tests
 docker compose exec -T ai python -m unittest discover -s tests
 ```
+## NVIDIA Nemotron on Nebius Token Factory
+
+NPC dialogue uses an NVIDIA Nemotron chat model through the Nebius Token Factory inference API when `NEBIUS_API_KEY` is set. The AI service reads the available model catalog and prefers a Nemotron Super chat model; set `NEBIUS_MODEL` to pin a specific available model. Every NPC turn sends the character instructions and conversation history to Token Factory's `/v1/chat/completions` endpoint. A failed Nebius request falls back to the configured Gemini or Groq text provider. Without a Nebius key, NPC dialogue uses Gemini or Groq directly.
+
+Token Factory serves the model through a hosted inference API, so the game can generate live NPC replies without hosting NVIDIA model weights or managing inference GPUs. This keeps the interactive conversation path simple to deploy. The speech and language evaluation paths currently use Gemini or Groq; they do not use Nebius. No other Nebius service is required by this project.
+
+To verify the active NPC provider, open `http://localhost:8001/health` after starting the stack and check `npc_dialogue`. A value of `nvidia-nemotron@nebius` confirms the configured route; make a test NPC turn to confirm a successful live inference call.
+
+## Deploy
+
+Deploy `roleapp-ai` and `roleapp-api` from `render.yaml` as Docker web services on Render. Provide `DATABASE_URL` for a PostgreSQL database, `NEBIUS_API_KEY`, and at least one of `GEMINI_API_KEY` or `GROQ_API_KEY` in the service settings. Set `AI_SERVICE_URL` on `roleapp-api` to the public URL of `roleapp-ai`; leave `USE_MOCK_AI=false`. Deploy the `game` directory to Vercel as a Vite project (build command `npm run build`, output directory `dist`). Its production pages call `https://roleapp-api.onrender.com`; if Render assigns a different API URL, update the two HTML page settings before building. Set `CORS_ORIGINS` on the API to the exact public game origin.
+
+Check `/health` on both backend services, then start a new game session and complete an NPC turn in the public client. Keep all API keys in service environment variables, never in browser code or the repository.
+
+## License
+
+RoleApp is released under the [MIT License](LICENSE), an OSI-approved open source license.

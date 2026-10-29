@@ -8,7 +8,7 @@ from typing import Optional
 
 from sqlalchemy.orm import Session
 
-from models.models import User
+from models.models import InventoryItem, User
 from services import npc_memory, phone
 from services.adventure_quests import PlanRule, Quest, ReceiveItemRule, SpellRule, TalkRule, current_quest, load_adventure
 
@@ -35,14 +35,22 @@ def catch_up(db: Session, user: User) -> list[tuple[str, str]]:
     """Finish quests whose one-time action is already done.
 
     A rune gate opened before its quest came up stays open, so the spell can't be cast
-    again; when that quest becomes current it counts as done right away.
+    again; a quest item already in the inventory can't be received again. When such a
+    quest becomes current it counts as done right away.
     """
     lines: list[tuple[str, str]] = []
     opened = set((user.story_flags or {}).get("opened_gates", []))
+    owned = {
+        row.item_id for row in db.query(InventoryItem)
+        .filter(InventoryItem.user_id == user.id, InventoryItem.quantity > 0)
+    }
     while True:
         quest = current_quest(user.adventure_stage)
         rule = quest.complete_when if quest is not None else None
-        if not (isinstance(rule, SpellRule) and rule.gate_id in opened):
+        gate_done = isinstance(rule, SpellRule) and rule.gate_id in opened
+        # A quest item (e.g. the Mist Lantern) received before its quest came up still counts.
+        item_done = isinstance(rule, ReceiveItemRule) and rule.item_id is not None and rule.item_id in owned
+        if not (gate_done or item_done):
             return lines
         before = user.adventure_stage
         user.adventure_stage += 1

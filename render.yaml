@@ -29,7 +29,7 @@ services:
       - key: AI_SERVICE_URL
         sync: false # the public https://...onrender.com URL of roleapp-ai
       - key: CORS_ORIGINS
-        value: "https://roleapp.vercel.app" # update if your production Vercel domain differs
+        value: "https://roleapp-zeta.vercel.app" # production game origin
 
   - type: web
     name: roleapp-ai
